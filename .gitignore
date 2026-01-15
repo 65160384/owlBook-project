@@ -1,0 +1,38 @@
+# =====================
+# OS (Windows / macOS)
+# =====================
+Thumbs.db
+.DS_Store
+
+# =====================
+# Editor / IDE
+# =====================
+.vscode/
+.idea/
+
+# =====================
+# Node.js
+# =====================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =====================
+# Environment variables
+# =====================
+.env
+.env.*
+
+# =====================
+# Build / Output
+# =====================
+dist/
+build/
+
+# =====================
+# Temporary files
+# =====================
+tmp/
+temp/
+*.log
