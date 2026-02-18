@@ -1,0 +1,12 @@
+{
+  "name": "owlbook-project",
+  "version": "1.0.0",
+  "description": "E-book/Webtoon reading platform project",
+  "main": "index.js",
+  "scripts": {
+    "lint": "echo \"Lint placeholder - no ESLint yet\"",
+    "test": "echo \"Test placeholder - no tests yet\""
+  },
+  "author": "Team OwlBook",
+  "license": "MIT"
+}
