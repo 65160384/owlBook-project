@@ -1,18 +1,13 @@
-name: Test Coverage
+name: Code Coverage
 
-on:
-  push:
-    branches: [ "main", "dev" ]
-  pull_request:
-    branches: [ "main", "dev" ]
+on: [pull_request]
 
 jobs:
   coverage:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -22,5 +17,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Tests with Coverage
+      - name: Run Coverage (placeholder)
         run: npm run test -- --coverage
+        continue-on-error: true

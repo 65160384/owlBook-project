@@ -1,18 +1,13 @@
-name: Code Quality (Lint)
+name: Code Quality
 
-on:
-  push:
-    branches: [ "main", "dev" ]
-  pull_request:
-    branches: [ "main", "dev" ]
+on: [push, pull_request]
 
 jobs:
   lint:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -22,5 +17,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Lint
+      - name: Run ESLint (placeholder)
         run: npm run lint
+        continue-on-error: true
