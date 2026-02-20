@@ -1,0 +1,22 @@
+name: Code Coverage
+
+on: [pull_request]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Coverage (placeholder)
+        run: npm run test -- --coverage
+        continue-on-error: true
