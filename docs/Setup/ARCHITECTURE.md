@@ -157,7 +157,7 @@ project-root/
 
 - **Repository URL**: https://github.com/65160384/owlBook-project.git
 
-- **Primary Contact/Team**: Nathawat Thampanya (Dev1), Chompunut Rueangrit(Dev2), Team name: Midori
+- **Primary Contact/Team**: Nathawat Thampanya (Dev1), Chompunut Rueangrit(Dev2), Team name: Ho Nok-Hook
 
 - **Date of Last Update**: 2026-02-19
 
