@@ -4,9 +4,19 @@
   "description": "E-book/Webtoon reading platform project",
   "main": "index.js",
   "scripts": {
+    "start": "node src/index.js",
     "lint": "echo \"Lint placeholder - no ESLint yet\"",
-    "test": "echo \"Test placeholder - no tests yet\""
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose"
   },
   "author": "Team OwlBook",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "jest": "^30.3.0"
+  }
 }
