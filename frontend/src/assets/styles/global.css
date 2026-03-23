@@ -1,0 +1,15 @@
+/* ปรับปุ่มให้ consistent */
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}

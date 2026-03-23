@@ -1,0 +1,11 @@
+{
+  "id": 3,
+  "title": "999Floors",
+  "cover": "/comics/I-Cleared-999-Floors-.../cover.jpg",
+  "episodes": [
+    { "id": 1, "title": "EP 1", "folder": "ep1" },
+    { "id": 2, "title": "EP 2", "folder": "ep2" },
+    { "id": 3, "title": "EP 3", "folder": "ep3" }
+  
+  ]
+}

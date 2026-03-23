@@ -1,0 +1,64 @@
+/* ✅ responsive grid */
+.grid-container{
+  display: grid;
+  grid-template-columns: repeat(4, 180px); /* desktop: 4 cards */
+  justify-content: center; /* จัดกลาง */
+  gap: 20px;
+  padding: 10px;
+  margin: 0 auto;
+}
+
+/* 📱 tablet */
+@media (max-width:1024px){
+  .grid-container{
+    grid-template-columns: repeat(3, 160px); /* tablet: 3 cards */
+    gap: 16px;
+  }
+}
+
+/* 📱 mobile */
+@media (max-width:768px){
+  .grid-container{
+    grid-template-columns: repeat(2, 140px); /* mobile: 2 cards */
+    gap: 14px;
+  }
+}
+
+/* 🧊 card */
+.comic-card{
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.comic-card:hover{
+  transform: translateY(-5px);
+}
+
+/* 🖼️ image */
+.comic-image{
+  width: 100%;
+  aspect-ratio: 3/4; /* คงสัดส่วนเดิม */
+  object-fit: cover;
+}
+
+/* 📝 info */
+.comic-info{
+  padding: 10px;
+  text-align: center;
+}
+
+.comic-info h3{
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* 🔗 link */
+a{
+  text-decoration: none;
+  color: black;
+}

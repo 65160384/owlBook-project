@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "title": "Chronicles",
+  "cover": "/comics/Chronicles-of-the-.../cover.png",
+  "episodes": [
+    { "id": 1, "title": "EP 1", "folder": "ep1" },
+    { "id": 2, "title": "EP 2", "folder": "ep2" },
+    { "id": 3, "title": "EP 3", "folder": "ep3" }
+  
+  ]
+}
