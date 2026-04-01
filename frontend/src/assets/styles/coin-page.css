@@ -1,0 +1,22 @@
+.coin-card {
+  max-width: 600px;
+  margin: 50px auto;
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+.balance-display { margin: 30px 0; padding: 20px; background: #fffbeb; border-radius: 12px; }
+.coin-amount { font-size: 48px; font-weight: 800; color: #ff9900; }
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+.option-btn {
+  padding: 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: white;
+  transition: 0.2s;
+}
+.option-btn:hover { border-color: #ff9900; background: #fffefb; }
+.opt-coins { font-weight: 700; font-size: 18px; }
+.opt-price { color: #64748b; margin-top: 5px; }

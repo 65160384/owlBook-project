@@ -1,0 +1,13 @@
+{
+  "status": "Ongoing",
+  "author": "Tatsuya Endo",
+  "year": "2019",
+  "views": "1.2M",
+  "freeEpisodes": 2,  
+  "tags": ["Action", "Comedy", "Family"],
+  "episodes": [
+    { "id": "ep3", "number": 3, "date": "April 3, 2026", "isLocked": true, "price": 10 },
+    { "id": "ep2", "number": 2, "date": "April 1, 2026", "isLocked": false },
+    { "id": "ep1", "number": 1, "date": "March 25, 2026", "isLocked": false }
+  ]
+}
