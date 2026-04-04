@@ -18,22 +18,11 @@ import { computed } from 'vue';
 import { comics } from "@/data/comics";
 import { favoriteStore } from '@/store/favoriteStore';
 import ComicGrid from "@/components/ComicGrid.vue";
+import "@/assets/styles/navbar.css"
+
 
 const myList = computed(() => {
   // กรองมังงะที่มี ID อยู่ใน favoriteStore
   return comics.filter(c => favoriteStore.isFavorite(c.id));
 });
 </script>
-
-<style scoped>
-.page-title { margin: 30px 0; text-align: left; }
-.empty-state { padding: 100px 20px; text-align: center; color: #64748b; }
-.btn-home { 
-  display: inline-block; 
-  margin-top: 20px; 
-  padding: 10px 20px; 
-  background: #ff9900; 
-  color: white; 
-  border-radius: 8px; 
-}
-</style>

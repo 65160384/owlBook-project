@@ -1,13 +1,16 @@
 {
   "status": "Ongoing",
-  "author": "Tatsuya Endo",
-  "year": "2019",
-  "views": "1.2M",
+  "author": "The Bully Manga",
+  "year": "2023",
+  "views": "22.9K",
+  "rating": "7.0",
+  "description": "เรื่องย่อ: หากคุณเป็นคนหนึ่งที่หลงใหลในมังงะแนวเกมแฟนตาซี ไม่ควรพลาด I Cleared 999 Floors in Advance: All People Scramble for the Tower เรื่องราวที่เต็มไปด้วยความตื่นเต้นและฉากแอ็คชั่นที่น่าติดตาม ในโลกที่มนุษย์ถูกขับเคลื่อนเข้าสู่หอคอยพิสูจน์พลัง พระเอกอย่างลู่หมิงต้องเผชิญกับการต่อสู้ที่ดุเดือด เพื่อพิสูจน์ความแข็งแกร่งและก้าวเข้าสู่ความรุ่งโรจน์ เขาเคลียร์หอคอยไปแล้ว 999 ชั้นก่อนที่ทุกคนจะได้รู้ ทำให้เขามีเลเวลสูง ไอเท็มล้ำค่า และสกิลระดับ SSS เรื่องราวน่าติดตามนี้เต็มไปด้วยการผจญภัย การอัปสเตตัส และเฉลยความลับที่ไม่คาดคิด นอกจากนี้ยังต้องเผชิญกับองค์กรลับและผู้เล่นที่ท้าทายความสามารถของเขา ร่วมติดตามการผจญภัยในมังงะ I Cleared 999 Floors in Advance และรับรองว่าคุณจะไม่ผิดหวัง อ่านมังงะนี้ได้ที่ thebullyproject.com พร้อมสัมผัสอวกาศแห่งการต่อสู้ที่ไม่เหมือนใคร",
+  "ref":"Naver Webtoon (Naver), Naver Series (Naver)",
   "freeEpisodes": 2,  
-  "tags": ["Action", "Comedy", "Family"],
+  "tags": ["Action", "Adventure", "Fantasy", "Psychological", "shonen", "manhwa"],
   "episodes": [
-    { "id": "ep3", "number": 3, "date": "April 3, 2026", "isLocked": true, "price": 10 },
-    { "id": "ep2", "number": 2, "date": "April 1, 2026", "isLocked": false },
-    { "id": "ep1", "number": 1, "date": "March 25, 2026", "isLocked": false }
+    { "id": "ep3", "number": 3, "date": "April 24, 2023", "isLocked": true, "price": 10 },
+    { "id": "ep2", "number": 2, "date": "February 7, 2023", "isLocked": false },
+    { "id": "ep1", "number": 1, "date": "January 12, 2023", "isLocked": false }
   ]
 }

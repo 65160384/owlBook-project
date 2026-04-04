@@ -70,6 +70,17 @@
   margin-top: 15px;
 }
 
+/* Dark mode fixes: ensure card, labels and inputs are visible */
+[data-theme='dark'] .login-form-card {
+  background: var(--header-bg);
+  box-shadow: 0 6px 22px rgba(0,0,0,0.5);
+}
+[data-theme='dark'] .login-form-card h2 { color: var(--text-h); }
+[data-theme='dark'] .form-group label { color: var(--text-h); }
+[data-theme='dark'] .form-input { background: var(--input-bg); color: var(--text-h); border: 1px solid var(--border); }
+[data-theme='dark'] .register-link-container, [data-theme='dark'] .dev-test-buttons { color: var(--text); }
+[data-theme='dark'] .login-button { background: var(--accent); color: #fff }
+
 .login-button:hover {
   background-color: #555;
 }

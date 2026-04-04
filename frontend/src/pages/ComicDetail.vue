@@ -4,6 +4,7 @@
       <div class="header-content">
         <div class="cover-container">
           <img :src="comic.image" class="cover-image" />
+          
           <button 
             @click="toggleFavorite" 
             :class="['bookmark-btn', { 'is-fav': favoriteStore.isFavorite(comic.id) }]"
@@ -14,11 +15,13 @@
         
         <div class="info-container">
           <h1>{{ comic.title }}</h1>
+          <p v-if="comic.description" class="comic-description">{{ comic.description }}</p>
           <div class="info-grid">
             <div class="info-item"><span class="info-label">Status:</span> <span>{{ comic.status || 'Ongoing' }}</span></div>
             <div class="info-item"><span class="info-label">Author:</span> <span>{{ comic.author || 'Unknown' }}</span></div>
             <div class="info-item"><span class="info-label">Year:</span> <span>{{ comic.year || '2026' }}</span></div>
             <div class="info-item"><span class="info-label">Views:</span> <span>{{ comic.views || '0' }}</span></div>
+            <div class="info-item"><span class="info-label">Ref:</span> <span>{{ comic.ref || 'OwlBook' }}</span></div>
           </div>
           <div class="tag-list">
             <span v-for="tag in comic.tags" :key="tag" class="tag">{{ tag }}</span>
@@ -32,17 +35,20 @@
         <h3>Chapters of {{ comic.title }}</h3>
         <input 
           type="text" 
-          placeholder="Search Chapter..." 
+          placeholder="Search Chapter... (example: 1 or 3)" 
           class="chapter-search" 
           v-model="searchQuery" 
         />
         
         <div class="chapter-list">
           <div v-for="ep in filteredEpisodes" :key="ep.id">
-            <a href="javascript:void(0)" @click="handleEpisodeAccess(ep)" class="chapter-item">
+            <a href="javascript:void(0)" @click="handleEpisodeAccess(ep)" :class="['chapter-item', { locked: isLocked(ep) }]">
               <div class="chapter-info">
                 <span class="chapter-name">ตอนที่ {{ ep.number }}</span>
-                <span v-if="isLocked(ep)" class="lock-icon">🔒 ({{ ep.price }} Coins)</span>
+                <template v-if="isLocked(ep)">
+                  <span class="lock-icon">🔒</span>
+                  <span class="lock-price">{{ ep.price ? (`${ep.price} Coins`) : 'Locked' }}</span>
+                </template>
               </div>
               <span class="chapter-date">{{ ep.date }}</span>
             </a>
@@ -51,21 +57,7 @@
       </section>
 
       <aside class="recommend-sidebar">
-        <h3>Recommended</h3>
-        <div class="recommend-list">
-          <router-link 
-            v-for="item in recommendationList" 
-            :key="item.id" 
-            :to="`/comic/${item.id}`"
-            class="recommend-card"
-          >
-            <img :src="item.image" class="recommend-thumb-small" />
-            <div class="recommend-info">
-              <div class="recommend-title">{{ item.title }}</div>
-              <div class="rating">⭐ {{ item.rating || '7.5' }}</div>
-            </div>
-          </router-link>
-        </div>
+        <PopularList :comics="comics" :limit="6" />
       </aside>
     </div>
   </div>
@@ -78,6 +70,7 @@ import { comics } from "@/data/comics";
 import { mockUserStore } from '@/store/mockUserStore';
 import { favoriteStore } from '@/store/favoriteStore';
 import "@/assets/styles/comic-detail.css";
+import PopularList from '@/components/PopularList.vue';
   
 const route = useRoute();
 const router = useRouter();
@@ -94,34 +87,69 @@ const filteredEpisodes = computed(() => {
   return eps.filter(ep => ep.number.toString().includes(searchQuery.value));
 });
 
-// แนะนำเรื่องอื่นๆ
-const recommendationList = computed(() => {
-  return comics.filter(c => c.id !== route.params.id).slice(0, 5);
-});
-
 // Logic ล็อกตอน
 const isLocked = (ep) => {
   const freeLimit = comic.value.freeEpisodes || 0; 
-  if (ep.number <= freeLimit) return false; 
+  if (ep.number <= freeLimit) return false;
+
+  const explicitlyLocked = ep.isLocked === true || (ep.price && ep.price > 0);
+  if (!explicitlyLocked) return false;
+
   return !mockUserStore.isUnlocked(comic.value.id, ep.id);
 };
 
-// จัดการการกดเข้าตอน
+// จัดการการเข้าถึงตอนอ่าน
 const handleEpisodeAccess = (ep) => {
-  if (!isLocked(ep)) {
+  const freeLimit = comic.value.freeEpisodes || 0;
+  
+  // 1. ตอนฟรี หรือ เป็น Admin/Provider (ให้เข้าอ่านได้เลย)
+  if (ep.number <= freeLimit || ['admin', 'provider'].includes(mockUserStore.role)) {
     router.push(`/reader/${comic.value.id}/${ep.id}/1`);
-  } else {
-    if (confirm(`ตอนนี้ติดเหรียญ (${ep.price} Coins) ยืนยันปลดล็อก?`)) {
-      if (mockUserStore.unlockEpisode(comic.value.id, ep.id, ep.price)) {
-        router.push(`/reader/${comic.value.id}/${ep.id}/1`);
-      } else if (confirm("เหรียญไม่พอ ไปหน้าเติมเหรียญไหม?")) {
+    return;
+  }
+
+  // 2. ถ้าเป็น Guest
+  if (!mockUserStore.isLoggedIn) {
+    if (confirm("ตอนนี้ต้องใช้เหรียญปลดล็อก กรุณาสมัครสมาชิกหรือเข้าสู่ระบบก่อนครับ")) {
+      router.push('/login');
+    }
+    return;
+  }
+
+  // 3. เช็คว่าเคยซื้อหรือยัง
+  if (mockUserStore.isUnlocked(comic.value.id, ep.id)) {
+    router.push(`/reader/${comic.value.id}/${ep.id}/1`);
+    return;
+  }
+
+  // 4. ยืนยันปลดล็อก (สำหรับ Member)
+  if (confirm(`ปลดล็อกตอนที่ ${ep.number} ใช้ ${ep.price || 10} Coins?`)) {
+    if (mockUserStore.unlockEpisode(comic.value.id, ep.id, ep.price || 10)) {
+      router.push(`/reader/${comic.value.id}/${ep.id}/1`);
+    } else {
+      if (confirm("เหรียญไม่พอ ต้องการไปหน้าเติมเหรียญหรือไม่?")) {
         router.push('/coin');
       }
     }
   }
 };
 
+// --- Logic ปรับปรุงใหม่: กรองสิทธิ์การ Add to List ---
 const toggleFavorite = () => {
+  // 1. ถ้ายังไม่ได้ Login (Guest)
+  if (!mockUserStore.isLoggedIn) {
+    alert("เฉพาะสมาชิกเท่านั้นที่สามารถบันทึกรายการโปรดได้ กรุณาสมัครสมาชิกหรือเข้าสู่ระบบก่อนนะคะ");
+    router.push('/login');
+    return;
+  }
+
+  // 2. ถ้า Login แล้วแต่เป็น Admin หรือ Provider
+  if (['admin', 'provider'].includes(mockUserStore.role)) {
+    alert("บัญชีประเภท Admin และ Content Provider ไม่สามารถใช้ฟีเจอร์บันทึกรายการโปรดได้ค่ะ");
+    return;
+  }
+  
+  // 3. ถ้าเป็น Member ปกติ ให้ทำงานได้
   favoriteStore.toggle(comic.value.id);
 };
 </script>

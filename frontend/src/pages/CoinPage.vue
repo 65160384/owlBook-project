@@ -23,6 +23,8 @@
 <script setup>
 import { mockUserStore } from '@/store/mockUserStore';
 import "@/assets/styles/coin-page.css"
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const topUpOptions = [
   { amount: 50, price: 50 },
@@ -31,9 +33,18 @@ const topUpOptions = [
   { amount: 500, price: 400 }
 ];
 
+// แก้ไขส่วนนี้ใน <script setup> ของ CoinPage.vue
 const topUp = (amount) => {
-  mockUserStore.coins += amount;
-  alert(`Successfully topped up ${amount} coins!`);
+  if (confirm(`ยืนยันการเติมเงิน ฿${amount}?`)) {
+    // 1. เพิ่มเหรียญลงใน Store (ตาม Logic เดิมของคุณ)
+    mockUserStore.coins += amount; 
+    
+    // 2. แก้ไข: ส่งค่า amount ไปกับ URL เพื่อให้หน้า Success แสดงค่าที่ถูกต้อง
+    router.push({ 
+      path: '/payment/success', 
+      query: { amount: amount } 
+    });
+  }
 };
 </script>
 

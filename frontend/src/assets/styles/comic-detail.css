@@ -7,7 +7,7 @@
   background-color: transparent;
 }
 
-/* --- 2. Unified Container Logic (ใช้เหมือนกันทั้ง Header และ Content) --- */
+/* --- 2. Unified Container Logic --- */
 .comic-header, 
 .main-layout {
   width: 95%;
@@ -18,9 +18,10 @@
 }
 
 /* --- 3. Comic Header Section --- */
+/* ปรับปรุง: ใช้ Variable เพื่อรองรับโหมดมืด */
 .comic-header {
-  background: #ffffff;
-  color: #1e1e1e;
+  background: var(--header-bg); /* ใช้สีตามโหมด */
+  color: var(--text-h);        /* ใช้สีหัวข้อตามโหมด */
   padding: 40px;
   border-radius: 16px;
   box-shadow: var(--shadow);
@@ -44,7 +45,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
 }
 
-/* --- 4. Bookmark Button & Hover --- */
+/* --- 4. Bookmark Button (คงเดิมเพราะสีส้มเด่นอยู่แล้ว) --- */
 .bookmark-btn {
   width: 100%;
   background: #ff6b35;
@@ -72,11 +73,48 @@
 .is-fav { background: #ef4444 !important; }
 
 /* --- 5. Info Section --- */
+/* ปรับปรุง: สีตัวหนังสือตามโหมด */
 .info-container { flex-grow: 1; }
-.info-container h1 { font-size: 32px; margin: 0 0 25px; text-align: left; }
-.info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; border-top: 1px solid #eee; padding-top: 25px; }
-.info-item { display: flex; justify-content: space-between; font-size: 15px; }
+.info-container h1 { 
+  font-size: 32px; 
+  margin: 0 0 25px; 
+  text-align: left; 
+  color: var(--text-h); /* ปรับตามโหมด */
+}
+
+/* Comic description under title */
+.comic-description {
+  margin: 6px 0 18px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.5;
+  max-width: 90%;
+  opacity: 0.95;
+}
+
+.info-grid { 
+  display: grid; 
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 15px; 
+  border-top: 1px solid var(--border); /* ใช้เส้นคั่นตามโหมด */
+  padding-top: 25px; 
+}
+
+.info-item { 
+  display: flex; 
+  justify-content: space-between; 
+  font-size: 15px; 
+  color: var(--text); /* ปรับตามโหมด */
+}
+
 .info-label { color: #888; font-weight: 600; }
+
+/* ปรับปรุง: ค่าข้อมูลมังงะให้เด่นขึ้นในทุกโหมด */
+.info-item span:last-child { 
+  color: var(--text-h); 
+  font-weight: 600; 
+}
+
 .tag-list { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 25px; }
 .tag { background: #f1f5f9; color: #333; padding: 6px 15px; border-radius: 20px; font-size: 13px; }
 
@@ -85,44 +123,67 @@
   display: grid;
   grid-template-columns: 1fr 350px;
   gap: 30px;
-  padding: 0; /* เคลียร์ padding เพื่อให้ตรงกับ Header */
+  padding: 0;
 }
 
 /* --- 7. Chapter Section --- */
+/* ปรับปรุง: ใช้ Variable พื้นหลังและตัวหนังสือ */
 .chapter-section {
-  background: white;
+  background: var(--header-bg); /* ปรับตามโหมด */
+  color: var(--text-h);        /* ปรับตามโหมด */
   padding: 30px;
   border-radius: 12px;
   box-shadow: var(--shadow);
   text-align: left;
 }
 
+/* ปรับปรุง: ช่องค้นหาให้สีกลืนกับโหมดมืด */
 .chapter-search {
   width: 100%;
   padding: 14px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--input-bg); /* ปรับตามโหมด */
+  color: var(--text-h);        /* ปรับตามโหมด */
+  border: 1px solid var(--border); /* ปรับตามโหมด */
   border-radius: 8px;
   margin-bottom: 25px;
   font-size: 16px;
-  box-sizing: border-box; /* บังคับให้ขนาดพอดีกล่อง */
+  box-sizing: border-box;
 }
 
 .chapter-item {
   display: flex;
   justify-content: space-between;
   padding: 18px 10px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--border);
   text-decoration: none;
   color: inherit;
   transition: 0.2s;
 }
 
-.chapter-item:hover { background: #fef3c7; color: var(--accent); }
+/* Locked chapter visuals */
+.chapter-item.locked { opacity: 0.95; }
+.chapter-item.locked .chapter-name { color: var(--text-h); font-weight:700 }
+.chapter-item.locked .lock-icon { margin-left:8px; color: #d97706 }
+.chapter-item.locked .lock-price { margin-left:6px; color: #b45309; font-weight:600 }
+.chapter-item.locked { cursor: pointer }
 
-/* --- 8. Sidebar Recommended (ปรับปรุงรูปเล็ก) --- */
+/* ปรับปรุง: ชื่อตอนตามโหมด */
+.chapter-name { color: var(--text-h); }
+
+/* ปรับปรุง: สี Highlight เวลาเอาเมาส์ชี้ */
+.chapter-item:hover { 
+  background: var(--bg); /* ใช้สีพื้นหลังของโหมดนั้นๆ */
+  color: var(--accent); 
+}
+
+.lock-icon{ font-size:14px }
+.lock-price{ font-size:14px }
+
+/* --- 8. Sidebar Recommended --- */
+/* ปรับปรุง: ใช้ Variable พื้นหลังและตัวหนังสือ */
 .recommend-sidebar {
-  background: white;
+  background: var(--header-bg); /* ปรับตามโหมด */
+  color: var(--text-h);        /* ปรับตามโหมด */
   padding: 25px;
   border-radius: 12px;
   box-shadow: var(--shadow);
@@ -141,24 +202,24 @@
   transition: 0.2s;
 }
 
-.recommend-card:hover { background: #f8fafc; transform: translateX(5px); }
+.recommend-card:hover { background: var(--bg); transform: translateX(5px); }
 
-/* บังคับรูปแนะนำให้เล็กตามคำขอ */
 .recommend-thumb-small {
   width: 65px;
   height: 85px;
   object-fit: cover;
   border-radius: 6px;
-  flex-shrink: 0; /* กันรูปโดนบีบ */
+  flex-shrink: 0;
 }
 
 .recommend-title {
   font-size: 14px;
   font-weight: 600;
   line-height: 1.3;
+  color: var(--text-h); /* เพิ่มเติมเพื่อให้ชื่อเรื่องใน Sidebar ไม่หาย */
 }
 
-/* --- 9. Responsive (รองรับมือถือ) --- */
+/* --- 9. Responsive --- */
 @media (max-width: 900px) {
   .main-layout { grid-template-columns: 1fr; width: 95%; }
   .header-content { flex-direction: column; align-items: center; }

@@ -24,6 +24,9 @@ yarn-error.log*
 .env
 .env.*
 
+# Ignore backup zips at root level
+*.zip
+
 # =====================
 # Build / Output
 # =====================

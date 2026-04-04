@@ -1,29 +1,109 @@
 .navbar{
-  width:100%;
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--nav-height);
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  padding:16px 24px;
-  background:#222F5B;
+  background: var(--nav-bg);
+  /* responsive horizontal padding so navbar compresses on medium screens */
+  padding: 0 clamp(8px, 2.5vw, var(--nav-padding));
+  z-index: 1200;
+  box-shadow: 0 2px 6px rgba(2,6,23,0.06);
 }
 
-.navbar > *{
-  max-width:1200px;
+/* Center inner navbar content to align with page .main-container */
+.nav-inner{
   width:100%;
-}
-
-.logo{
-  font-size:22px;
-  font-weight:bold;
-  color:white;
-}
-
-.menu{
+  max-width:1200px;
+  margin:0 auto;
   display:flex;
-  gap:20px;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding-inline: 6px; /* small inner padding so text doesn't touch edges */
+  box-sizing: border-box;
 }
 
-.menu a{
-  color:white;
-  text-decoration:none;
+/* Make menu items behave the same for all roles: shrink instead of wrapping */
+.nav-inner .menu{
+  display:flex;
+  gap: clamp(8px, 1.2vw, 14px);
+  align-items:center;
+  flex-wrap:nowrap; /* avoid wrapping */
+  min-width:0; /* allow children to shrink */
 }
+
+/* Allow each menu child (links/buttons) to shrink with ellipsis when space is limited */
+.nav-inner .menu > *{
+  flex: 0 1 auto;
+  min-width: 56px; /* ensure tappable size */
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Make the theme-toggle and logout buttons compact and shrinkable */
+.nav-inner .menu .theme-toggle,
+.nav-inner .menu .logout-btn{
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 16px;
+}
+
+.navbar .logo{ display:flex; align-items:center; gap:12px }
+.navbar .logo img{ width: var(--nav-logo-size); height: var(--nav-logo-size); border-radius:6px; flex-shrink:0 }
+.navbar .logo span{ margin-left:6px; font-weight:800; color:var(--nav-text, #fff); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:220px }
+
+.navbar .menu{ margin-left:auto; display:flex; gap:14px; align-items:center; align-self:stretch }
+.navbar .menu a{ color:var(--nav-text,#fff); text-decoration:none; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:160px; display:inline-block }
+.navbar .theme-toggle{ padding:6px 12px; border-radius:18px }
+
+/* responsive: collapse spacing on small screens and allow wrap */
+@media (max-width:1000px){
+  /* medium screens: reduce spacing and font-size so navbar compresses */
+  .navbar{ padding-inline: clamp(8px, 3vw, 14px) }
+  .navbar .menu{ gap:10px }
+  .navbar .logo img{ width: calc(var(--nav-logo-size) - 6px); height: calc(var(--nav-logo-size) - 6px) }
+  .navbar .logo span{ font-size:15px; max-width:160px }
+  .navbar .menu a{ font-size:14px; max-width:120px }
+}
+
+@media (max-width:800px){
+  .navbar{ padding: 6px 12px }
+  .navbar .menu{ gap:8px }
+  .navbar .logo span{ font-size:15px }
+}
+
+@media (max-width:520px){
+  .navbar{ height: var(--nav-height); align-items:center }
+  .navbar .container{ flex-direction:column }
+  .navbar .menu{ width:100%; justify-content:center; flex-wrap:wrap }
+}
+
+/* Very small screens: hide long brand name and keep logo compact */
+@media (max-width:420px){
+  .navbar{ padding:6px 10px }
+  .navbar .logo span{ display:none }
+  .navbar .logo img{ width: calc(var(--nav-logo-size) - 8px); height: calc(var(--nav-logo-size) - 8px) }
+  .navbar .menu{ justify-content:flex-end }
+}
+
+/* Logout button red on hover and clearer style */
+.logout-btn{
+  background: transparent;
+  color: var(--nav-text, #fff);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding:6px 12px;
+  border-radius: 18px;
+}
+.logout-btn:hover{
+  background: #ef4444; /* red */
+  color: #fff;
+  border-color: rgba(0,0,0,0.08);
+}
+
+/* Make sure theme-toggle on dark remains visible */
+.theme-toggle{ box-shadow: none }

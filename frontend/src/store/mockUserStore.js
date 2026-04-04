@@ -1,30 +1,45 @@
-// /src/store/mockUserStore.js
 import { reactive } from 'vue';
 
-// จำลองข้อมูลผู้ใช้ (สำหรับ Frontend เทสคนเดียว)
+const initialState = {
+  isLoggedIn: false,
+  role: 'guest', // guest, member, provider, admin
+  coins: 0,
+  unlockedEpisodes: [], // เก็บรายการที่ซื้อแล้วตาม Activity Diagram
+  userId: null
+};
+
 export const mockUserStore = reactive({
-  coins: 50, // จำนวนเหรียญที่มี
-  unlockedEpisodes: [
-    // format: 'comicId_episodeId'
-    'spy-x-family_ep1',
-    'spy-x-family_ep2'
-  ],
-  
-  // ตรวจสอบว่าตอนถูกปลดล็อกหรือยัง
+  ...initialState,
+
+  login(role) {
+    this.isLoggedIn = true;
+    this.role = role;
+    this.userId = 'user_' + Date.now();
+    // จำลองเหรียญเริ่มต้นสำหรับ Member ตาม User Story
+    this.coins = (role === 'member') ? 100 : 0; 
+  },
+
+  logout() {
+    Object.assign(this, initialState);
+  },
+
+  // UC-10: เติมเหรียญ (จำลองการรับค่าจาก Payment System)
+  addCoins(amount) {
+    this.coins += Number(amount);
+  },
+
+  // UC-08 & UC-11: ตรวจสอบและปลดล็อกเนื้อหา
   isUnlocked(comicId, episodeId) {
     return this.unlockedEpisodes.includes(`${comicId}_${episodeId}`);
   },
   
-  // ปลดล็อกตอน
   unlockEpisode(comicId, episodeId, price) {
+    // ตรวจสอบเงื่อนไขตาม Activity Diagram: "เหรียญในบัญชีเพียงพอหรือไม่"
     if (this.coins >= price) {
       this.coins -= price;
       this.unlockedEpisodes.push(`${comicId}_${episodeId}`);
-      alert(`Unlocked ${episodeId}. Remaining coins: ${this.coins}`);
       return true;
-    } else {
-      alert('Not enough coins! Please go to top-up.');
-      return false;
     }
+    return false; // ถ้าไม่พอ ระบบจะพาไปหน้าเติมเงินตาม Diagram
   }
 });

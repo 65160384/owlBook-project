@@ -24,8 +24,9 @@
             id="reg-password"
             v-model="password"
             type="password"
+            minlength="8"
             class="form-input"
-            placeholder="Create a strong password"
+            placeholder="Create a strong password (8+ characters)"
             required
           />
         </div>

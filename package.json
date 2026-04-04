@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
+    "server": "node backend/server.js",
     "lint": "echo \"Lint placeholder - no ESLint yet\"",
     "test": "echo \"Test placeholder - no tests yet\""
   },
@@ -13,6 +14,7 @@
   "dependencies": {
     "axios": "^1.13.6",
     "express": "^5.2.1",
+    "multer": "^1.4.5-lts.1",
     "vue-router": "^5.0.3"
   }
 }

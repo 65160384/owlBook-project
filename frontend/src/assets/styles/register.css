@@ -70,6 +70,16 @@
   margin-top: 15px;
 }
 
+/* Dark mode tweaks for register/login forms */
+[data-theme='dark'] .register-form-card {
+  background: var(--header-bg);
+  box-shadow: 0 6px 22px rgba(0,0,0,0.5);
+}
+[data-theme='dark'] .register-form-card h2 { color: var(--text-h); }
+[data-theme='dark'] .form-group label { color: var(--text-h); }
+[data-theme='dark'] .form-input { background: var(--input-bg); color: var(--text-h); border: 1px solid var(--border); }
+[data-theme='dark'] .register-button { background: var(--accent); color: #fff }
+
 .register-button:hover {
   background-color: #e68a00;
 }
