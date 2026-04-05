@@ -61,10 +61,12 @@ cp .env.example .env
 
 ```bash
 # เริ่มการทำงานของระบบ (Backend รันที่ http://localhost:4000)
+cd src/backend
 npm run dev
+cd ..
 
 # เริ่มการทำงานของส่วนติดต่อผู้ใช้ (Frontend รันที่ http://localhost:5173)
-cd src/main/frontend
+cd src/frontend
 npm run dev
 ```
 ## Build & Test
