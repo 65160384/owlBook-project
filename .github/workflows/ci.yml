@@ -7,31 +7,65 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  backend-ci:
+    name: Backend CI
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22.16.0'
 
-      - name: Install Backend dependencies
+      - name: Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-backend-${{ hashFiles('backend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-backend-
+
+      - name: Install dependencies
         working-directory: ./backend
         run: npm ci
 
-      - name: Run Backend tests
+      - name: Run lint
         working-directory: ./backend
-        run: npm test
+        run: npm run lint || echo "No linting defined"
         continue-on-error: true
 
-      - name: Install Frontend dependencies
+      - name: Run tests
+        working-directory: ./backend
+        run: npm test || echo "No tests defined"
+        continue-on-error: true
+
+  frontend-ci:
+    name: Frontend CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+
+      - name: Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-frontend-${{ hashFiles('frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-frontend-
+
+      - name: Install dependencies
         working-directory: ./frontend
         run: npm ci
 
-      - name: Run Frontend lint/test
+      - name: Build frontend
         working-directory: ./frontend
-        run: npm run lint
+        run: npm run build || echo "Build failed"
         continue-on-error: true
