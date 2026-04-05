@@ -156,22 +156,29 @@
 
 ---
 
-## Scenario 8: Content Provider Create Cartoon
+## Scenario 8: Admin Manage Cartoon and Category
 
-**Objective:** Content Provider สามารถสร้างการ์ตูนได้
+**Objective:** Admin สามารถเพิ่ม แก้ไข ซ่อนการ์ตูน และเพิ่มหมวดหมู่ได้
 
 **Steps:**
 
-1. Login เป็น Content Provider
-2. สร้าง Cartoon ใหม่
+1. เข้าสู่ระบบด้วยบัญชี Admin
+2. เพิ่มการ์ตูนใหม่
+3. แก้ไขข้อมูลการ์ตูน
+4. ซ่อนการ์ตูนออกจากการแสดงผล
+5. เพิ่มหมวดหมู่ใหม่
 
 **Expected Outcome:**
-✓ Cartoon ถูกสร้าง  
-✓ เชื่อมกับผู้สร้าง (author_cartoon)  
+✓ Admin เพิ่มการ์ตูนได้สำเร็จ  
+✓ Admin แก้ไขข้อมูลการ์ตูนได้สำเร็จ  
+✓ Admin สามารถซ่อนการ์ตูนได้สำเร็จ  
+✓ การ์ตูนที่ถูกซ่อนจะไม่แสดงในหน้า User  
+✓ ข้อมูลการ์ตูนยังคงอยู่ในฐานข้อมูล  
+✓ Admin เพิ่มหมวดหมู่ได้สำเร็จ  
 
-**Test Date:** 03/04/2026  
+**Test Date:** 06/04/2026  
 **Tester:** QA Lead  
-**Result:** PASS  
+**Result:** Pending  
 
 ---
 
