@@ -1,0 +1,20 @@
+.page-title {
+  margin: 30px 0;
+  text-align: left;
+  color: var(--text-h);
+}
+
+.empty-state {
+  padding: 100px 20px;
+  text-align: center;
+  color: var(--text);
+}
+
+.btn-home {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #ff9900;
+  color: white;
+  border-radius: 8px;
+}

@@ -1,0 +1,831 @@
+/* src/assets/styles/manage-comics.css */
+:root {
+  --mc-bg: #f8fafc;
+  /* light page background fallback */
+  --mc-card: #ffffff;
+  --mc-muted: #6b7280;
+  --mc-accent: #2563eb;
+  /* blue */
+  --mc-success: #16a34a;
+  --mc-danger: #ef4444;
+  --mc-border: #e6e9ef;
+  --mc-shadow: 0 6px 18px rgba(20, 24, 40, 0.06);
+}
+
+/* Dark theme overrides for component-specific variables */
+[data-theme='dark'] {
+  --mc-card: var(--header-bg);
+  --mc-muted: rgba(255, 255, 255, 0.78);
+  --mc-accent: #60a5fa;
+  --mc-success: #34d399;
+  --mc-danger: #fb7185;
+  --mc-border: #2b2b2b;
+  --mc-shadow: 0 8px 26px rgba(0, 0, 0, 0.6);
+}
+
+.main-container {
+  padding: 36px 22px 22px;
+  /* a bit more top padding so header doesn't clash with navbar */
+  max-width: 1200px;
+  margin: 0 auto;
+  background: transparent;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 22px;
+  flex-wrap: nowrap;
+  /* keep controls and title on single row on desktop */
+}
+
+.dashboard-header .page-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-h, #0f172a);
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.filter-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: transparent;
+  flex: 1 1 auto;
+  /* allow filter group to take remaining space */
+}
+
+.admin-search,
+.admin-filter,
+.form-input {
+  padding: var(--control-padding);
+  border-radius: var(--control-radius);
+  border: 1px solid var(--mc-border);
+  background: var(--mc-card);
+  color: var(--text-h, #0f172a);
+  min-width: 160px;
+  box-shadow: var(--mc-shadow);
+}
+
+/* Custom styled select (admin filter) to match theme and be responsive */
+.admin-filter {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 40px;
+}
+
+.admin-filter::-ms-expand {
+  display: none
+}
+
+/* Ensure select dropdown matches dark/light themes when opened (some browsers respect this) */
+.admin-filter,
+.admin-search {
+  background-clip: padding-box
+}
+
+.admin-search::placeholder {
+  color: #9aa4b2
+}
+
+.btn-add-main {
+  padding: 10px 16px;
+  border-radius: var(--btn-radius);
+  font-weight: 700;
+  border: none;
+  box-shadow: var(--mc-shadow);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+  background: linear-gradient(180deg, var(--mc-accent), #1e40af);
+  color: #fff;
+  white-space: nowrap;
+}
+
+.btn-add-main:hover {
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.10)
+}
+
+/* Keep button press scaling but avoid layout shift */
+.btn-add-main:active,
+.btn-action:active,
+.btn-icon:active {
+  transform: scale(0.98)
+}
+
+/* Make action buttons consistent size and responsive */
+.btn-action {
+  padding: 10px 12px;
+  min-width: 72px;
+  border-radius: 10px;
+  font-weight: 700
+}
+
+/* Card wrapper */
+.dashboard-card {
+  background: var(--mc-card);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: var(--mc-shadow);
+}
+
+.dashboard-card.no-padding {
+  padding: 8px
+}
+
+/* Table */
+.manage-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+
+.manage-table thead {
+  display: table-header-group;
+}
+
+.manage-table thead tr {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  color: var(--mc-muted);
+  font-weight: 700
+}
+
+.manage-table thead th {
+  background: transparent;
+  border: 0;
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 13px
+}
+
+.manage-table thead th.th-cover {
+  width: 110px;
+  flex: 0 0 110px
+}
+
+.manage-table thead th.th-info {
+  flex: 1
+}
+
+.manage-table thead th.th-status {
+  width: 120px;
+  flex: 0 0 120px
+}
+
+.manage-table thead th.th-action {
+  width: 160px;
+  flex: 0 0 160px
+}
+
+.manage-table thead th.th-status {
+  width: 140px;
+  flex: 0 0 140px
+}
+
+.manage-table thead th.th-action {
+  width: 160px;
+  flex: 0 0 160px
+}
+
+.manage-table tbody tr {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  background: var(--mc-card);
+  border: 1px solid var(--mc-border);
+  border-radius: 12px;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.manage-table tbody tr:hover {
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04)
+}
+
+/* Allow titles and meta to wrap and truncate neatly */
+.manga-title {
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--text-h, #0f172a);
+  margin-bottom: 6px;
+  text-align: left;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-clamp: 2
+}
+
+.manga-meta {
+  color: var(--mc-muted);
+  font-size: 13px;
+  margin-bottom: 8px;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.col-cover {
+  width: 110px;
+  flex: 0 0 110px
+}
+
+.col-status {
+  width: 140px;
+  flex: 0 0 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column
+}
+
+.action-cell {
+  width: 160px;
+  flex: 0 0 160px
+}
+
+/* Ensure table header and body columns line up using explicit column widths */
+.manage-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.manage-table thead th {
+  text-align: left;
+  padding: 18px 20px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Column widths: cover (1), details (2) flexible, status (3) fixed, actions (4) fixed */
+.manage-table thead th:nth-child(1),
+.manage-table tbody td:nth-child(1) {
+  width: 92px;
+  padding: 18px 12px;
+}
+
+.manage-table thead th:nth-child(2),
+.manage-table tbody td:nth-child(2) {
+  /* flexible column */
+  min-width: 0;
+  padding: 18px 18px;
+}
+
+.manage-table thead th:nth-child(3),
+.manage-table tbody td:nth-child(3) {
+  width: 140px;
+  text-align: center;
+}
+
+.manage-table thead th:nth-child(4),
+.manage-table tbody td:nth-child(4) {
+  width: 160px;
+  text-align: center;
+}
+
+/* Center status badge and action buttons vertically and horizontally */
+.manage-table tbody td[data-label="Status"],
+.manage-table tbody td:nth-child(3) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.manage-table tbody td[data-label="Actions"],
+.manage-table tbody td:nth-child(4) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Make sure action buttons don't overflow and keep consistent sizing */
+.manage-table .btn-action {
+  padding: 10px 12px;
+  min-width: 72px
+}
+
+/* Responsive: on narrow screens allow the details column to shrink and stack */
+@media (max-width:900px) {
+
+  .manage-table thead th:nth-child(1),
+  .manage-table tbody td:nth-child(1) {
+    width: 72px
+  }
+
+  .manage-table thead th:nth-child(3),
+  .manage-table tbody td:nth-child(3) {
+    width: 120px
+  }
+
+  .manage-table thead th:nth-child(4),
+  .manage-table tbody td:nth-child(4) {
+    width: 140px
+  }
+
+  .manage-table tbody td[data-label="Actions"] {
+    gap: 6px
+  }
+}
+
+.col-info-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: left
+}
+
+.manga-title {
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--text-h, #0f172a);
+  margin-bottom: 6px;
+  text-align: left
+}
+
+.manga-meta {
+  color: var(--mc-muted);
+  font-size: 13px;
+  margin-bottom: 8px
+}
+
+.tag-list-mini {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap
+}
+
+.tag-mini {
+  display: inline-block;
+  padding: 6px 8px;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.08);
+  color: #4f46e5;
+  font-size: 12px;
+}
+
+/* Ensure tags are readable in dark mode */
+[data-theme='dark'] .tag-mini {
+  background: rgba(99, 102, 241, 0.14);
+  color: #e6eefc;
+}
+
+.thumb-mini-large {
+  width: 96px;
+  height: 128px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(20, 24, 40, 0.06)
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.status-badge.success {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--mc-success)
+}
+
+.status-badge.draft {
+  background: rgba(234, 88, 12, 0.08);
+  color: #ea580c
+}
+
+/* Actions */
+.action-cell {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: center
+}
+
+.btn-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow .12s ease;
+  cursor: pointer;
+  border: none;
+  flex-direction: column
+}
+
+.btn-label {
+  margin-top: 6px;
+  font-size: 12px;
+  display: block;
+  text-align: center
+}
+
+.btn-icon:focus {
+  outline: 2px solid rgba(37, 99, 235, 0.18);
+  outline-offset: 2px
+}
+
+.btn-icon.blue {
+  background: #eff6ff;
+  color: #2563eb
+}
+
+.btn-icon.orange {
+  background: #fff7ed;
+  color: #f97316
+}
+
+.btn-icon.red {
+  background: #fff1f2;
+  color: var(--mc-danger)
+}
+
+.btn-icon:hover {
+  box-shadow: 0 6px 16px rgba(2, 6, 23, 0.04)
+}
+
+/* Dark mode: make icon buttons more visible */
+[data-theme='dark'] .btn-icon.blue {
+  background: rgba(99, 102, 241, 0.12);
+  color: #c7d2fe
+}
+
+[data-theme='dark'] .btn-icon.orange {
+  background: rgba(255, 159, 67, 0.08);
+  color: #ffd6a5
+}
+
+[data-theme='dark'] .btn-icon.red {
+  background: rgba(239, 68, 68, 0.06);
+  color: #ffcfcf
+}
+
+[data-theme='dark'] .btn-icon {
+  box-shadow: none
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3, 7, 18, 0.6);
+  z-index: 9999;
+  backdrop-filter: blur(4px)
+}
+
+.modal-content {
+  background: var(--mc-card);
+  width: 96%;
+  max-width: 640px;
+  border-radius: 16px;
+  padding: 26px;
+  box-shadow: 0 20px 60px rgba(2, 6, 23, 0.18)
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px
+}
+
+.close-btn {
+  font-size: 26px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--mc-muted)
+}
+
+.form-group {
+  margin-bottom: 12px;
+  text-align: left
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 700;
+  color: var(--text)
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--mc-border);
+  background: var(--input-bg);
+  color: var(--text-h)
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px
+}
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 14px
+}
+
+.btn-cancel {
+  background: #94a3b8;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none
+}
+
+.btn-save {
+  background: linear-gradient(180deg, var(--mc-accent), #1e40af);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 800
+}
+
+/* Responsive: stack rows into compact cards on smaller screens */
+@media (max-width: 880px) {
+  .manage-table tbody tr {
+    flex-direction: row;
+    gap: 12px;
+    padding: 12px
+  }
+
+  .col-cover {
+    flex: 0 0 86px
+  }
+
+  .thumb-mini-large {
+    width: 86px;
+    height: 118px
+  }
+}
+
+@media (max-width: 560px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px
+  }
+
+  .filter-group {
+    width: 100%;
+    justify-content: space-between
+  }
+
+  .admin-search {
+    flex: 1
+  }
+
+  .manage-table tbody tr {
+    flex-direction: column;
+    align-items: stretch
+  }
+
+  .col-cover {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px
+  }
+
+  .col-info-left {
+    padding-left: 0
+  }
+
+  .action-cell {
+    justify-content: flex-start;
+    padding-top: 8px
+  }
+}
+
+@media (max-width: 640px) {
+  .btn-add-main {
+    width: 100%;
+    display: block
+  }
+
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px
+  }
+}
+
+/* Dark mode tweaks: slightly dim white text so it's readable */
+[data-theme='dark'] .dashboard-header .page-title,
+[data-theme='dark'] .manga-title,
+[data-theme='dark'] .form-group label {
+  color: rgba(255, 255, 255, 0.96);
+}
+
+[data-theme='dark'] .manga-meta,
+[data-theme='dark'] .empty-state,
+[data-theme='dark'] .manage-table thead tr {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* stronger contrast for cover card background in dark */
+[data-theme='dark'] .dashboard-card {
+  background: var(--mc-card);
+  border: 1px solid var(--mc-border)
+}
+
+/* Ensure thumb images have slight border in dark mode */
+[data-theme='dark'] .thumb-mini-large {
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.04)
+}
+
+/* Fix modal form inputs in dark mode (inputs were white with white text) */
+[data-theme='dark'] .modal-content .form-input {
+  background: var(--input-bg);
+  color: var(--text-h);
+  border: 1px solid var(--border);
+}
+
+[data-theme='dark'] .form-input {
+  background: var(--input-bg);
+  color: var(--text-h);
+  border: 1px solid var(--border);
+}
+
+[data-theme='dark'] .modal-content .form-input::placeholder {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+/* Make modal header and small text readable in dark */
+[data-theme='dark'] .modal-content .modal-header h3 {
+  color: var(--text-h)
+}
+
+[data-theme='dark'] .modal-content small {
+  color: rgba(255, 255, 255, 0.7)
+}
+
+/* Textarea and file chooser contrast */
+[data-theme='dark'] .modal-content .form-textarea {
+  background: var(--input-bg);
+  color: var(--text-h);
+  border: 1px solid var(--border);
+}
+
+[data-theme='dark'] .modal-content .file-chooser-label,
+[data-theme='dark'] .modal-content .file-help {
+  color: rgba(255, 255, 255, 0.78)
+}
+
+/* Action button labels inside the table row */
+[data-theme='dark'] .btn-label {
+  color: var(--text-h)
+}
+
+/* Ensure tag pills are readable */
+[data-theme='dark'] .tag-mini {
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.92)
+}
+
+/* Dark-mode tag and button tweaks */
+[data-theme='dark'] .tag-mini {
+  background: rgba(99, 102, 241, 0.12);
+  color: #dbeafe;
+  /* light indigo */
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+[data-theme='dark'] .btn-label {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+[data-theme='dark'] .btn-icon.blue {
+  background: rgba(99, 102, 241, 0.12);
+  color: #c7d2fe
+}
+
+[data-theme='dark'] .btn-icon.orange {
+  background: rgba(255, 159, 67, 0.08);
+  color: #ffd6a5
+}
+
+[data-theme='dark'] .btn-icon.red {
+  background: rgba(239, 68, 68, 0.06);
+  color: #ffcfcf
+}
+
+/* Episode manager / page cards in dark */
+[data-theme='dark'] .ep-list li,
+[data-theme='dark'] .page-card {
+  background: var(--header-bg);
+  border-color: var(--border);
+  color: var(--text-h);
+}
+
+/* Utility tweaks */
+.manage-table tbody tr+tr {
+  margin-top: 10px
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 12px;
+  color: var(--mc-muted)
+}
+
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap
+}
+
+/* คัดลอกเนื้อหาเดิมของคุณ Gem มาทั้งหมด และตรวจสอบส่วนท้ายไฟล์ให้เป็นแบบนี้ครับ */
+
+@media (max-width: 768px) {
+  .manage-table thead {
+    display: none;
+    /* ซ่อนหัวตารางบนมือถือ */
+  }
+
+  .manage-table tbody tr {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    margin-bottom: 20px;
+    gap: 10px;
+    border: 1px solid var(--mc-border);
+  }
+
+  .manage-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100% !important;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--mc-border);
+    text-align: right;
+  }
+
+  .manage-table td::before {
+    content: attr(data-label);
+    /* ดึงชื่อหัวข้อ Cover, Details, Status มาแสดง */
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--mc-muted);
+    text-align: left;
+  }
+
+  .col-cover {
+    order: -1;
+    justify-content: center !important;
+    border: none !important;
+  }
+
+  .thumb-mini-large {
+    width: 100px;
+    height: 140px;
+  }
+
+  .action-cell {
+    flex-wrap: wrap;
+    justify-content: center !important;
+    gap: 8px;
+    border: none !important;
+    padding-top: 15px !important;
+  }
+}
+
+/* end of file */

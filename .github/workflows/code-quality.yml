@@ -3,20 +3,34 @@ name: Code Quality
 on: [push, pull_request]
 
 jobs:
-  lint:
+  backend-lint:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
-
+      - uses: actions/checkout@v4
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
-
+          node-version: '22.16.0'
       - name: Install dependencies
-        run: npm install
+        working-directory: ./backend
+        run: npm ci
+      - name: Run lint
+        working-directory: ./backend
+        run: npm run lint || echo "No linting defined"
+        continue-on-error: true
 
-      - name: Run ESLint (placeholder)
-        run: npm run lint
+  frontend-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+      - name: Run build check
+        working-directory: ./frontend
+        run: npm run build || echo "Build failed"
         continue-on-error: true

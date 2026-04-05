@@ -1,0 +1,113 @@
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: transparent;
+}
+
+.login-form-card {
+  background: #ffffff;
+  padding: 50px; 
+  border-radius: 15px; 
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 550px;
+}
+
+.login-form-card h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #333;
+  font-size: 28px;
+}
+
+
+.form-group {
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 15px; 
+}
+
+.form-group label {
+
+  width: 100px;
+  flex-shrink: 0; 
+  font-weight: 600;
+  color: #555;
+  text-align: right; 
+}
+
+.form-input {
+  flex-grow: 1; 
+  width: auto; 
+  padding: 14px 18px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #ff9900;
+  box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.1);
+}
+
+.login-button {
+  width: 100%;
+  padding: 14px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
+}
+
+/* Dark mode fixes: ensure card, labels and inputs are visible */
+[data-theme='dark'] .login-form-card {
+  background: var(--header-bg);
+  box-shadow: 0 6px 22px rgba(0,0,0,0.5);
+}
+[data-theme='dark'] .login-form-card h2 { color: var(--text-h); }
+[data-theme='dark'] .form-group label { color: var(--text-h); }
+[data-theme='dark'] .form-input { background: var(--input-bg); color: var(--text-h); border: 1px solid var(--border); }
+[data-theme='dark'] .register-link-container, [data-theme='dark'] .dev-test-buttons { color: var(--text); }
+[data-theme='dark'] .login-button { background: var(--accent); color: #fff }
+
+.login-button:hover {
+  background-color: #555;
+}
+
+.register-link-container {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 15px;
+  color: #777;
+}
+
+.register-link-container a {
+  color: #ff9900;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.register-link-container a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 15px;
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: rgba(211, 47, 47, 0.1);
+  border-radius: 8px;
+}

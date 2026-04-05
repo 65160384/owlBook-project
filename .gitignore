@@ -24,6 +24,9 @@ yarn-error.log*
 .env
 .env.*
 
+# Ignore backup zips at root level
+*.zip
+
 # =====================
 # Build / Output
 # =====================
@@ -36,3 +39,6 @@ build/
 tmp/
 temp/
 *.log
+
+frontend/public/pdf/*.pdf
+owlBook-project.git/

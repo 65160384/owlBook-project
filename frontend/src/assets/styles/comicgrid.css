@@ -1,0 +1,131 @@
+/* ✅ responsive grid */
+.grid-container {
+  display: grid;
+  /* 🔒 ล็อกไว้ที่ 4 คอลัมน์เท่ากันทุกหน้าจอ */
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 20px; /* เพิ่มระยะห่างระหว่างรูปเพื่อให้รูปดูไม่เบียดและดูเล็กลง */
+  padding: 15px;
+  margin: 0 auto;
+  max-width: 1000px; /* จำกัดความกว้างรวมของ Grid เพื่อไม่ให้รูปขยายใหญ่เกินไป */
+  box-sizing: border-box;
+}
+
+/* 📱 tablet */
+@media (max-width:1024px){
+  .grid-container{
+    grid-template-columns: repeat(3, 160px); /* tablet: 3 cards */
+    gap: 16px;
+  }
+}
+
+/* 📱 mobile */
+@media (max-width:768px){
+  .grid-container{
+    grid-template-columns: repeat(2, 140px); /* mobile: 2 cards */
+    gap: 14px;
+  }
+}
+
+/* 🧊 card */
+.comic-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.12s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  
+  /* ✨ จุดสำคัญ: จำกัดขนาด Card ให้เล็กลงที่นี่ */
+  width: 100%;
+  max-width: 160px; /* ปรับตัวเลขนี้ตามความเล็กที่ต้องการ (เช่น 140px หรือ 150px) */
+  margin: 0 auto;   /* จัดให้อยู่กึ่งกลางช่อง Grid */
+}
+
+.comic-card:hover{
+  transform: translateY(-4px);
+}
+
+/* 🖼️ image */
+.comic-image {
+  width: 100%;
+  aspect-ratio: 2/3; /* ล็อกสัดส่วนรูปปกให้เท่ากัน */
+  object-fit: cover;
+  display: block;
+}
+.image-wrap{ position: relative }
+.top-badge{
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(255,69,0,0.95);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight:700;
+}
+
+/* 📝 info */
+.comic-info{
+  padding: 6px;
+  text-align: center;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.comic-info h3{
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-h);
+}
+
+.card-title{ font-size: 12px; line-height:1.15; margin-bottom:3px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; text-overflow:ellipsis; line-clamp:2 }
+.card-sub{ color: var(--text); font-size:11px; margin-bottom:4px; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.card-rating{ display:flex; align-items:center; justify-content:center; gap:8px }
+.stars{ color: #f6c55b; font-size:14px }
+.star{ margin-right:2px }
+.rating-num{ color: var(--text); font-weight:600; font-size:13px }
+
+/* Make the card content fit container and reduce padding on small screens */
+@media (max-width:1100px){
+  .grid-container{ grid-template-columns: repeat(3, minmax(160px, 1fr)); }
+}
+@media (max-width:800px){
+  .grid-container{ grid-template-columns: repeat(2, minmax(140px, 1fr)); gap:14px }
+  .comic-info{ padding:8px }
+  .card-title{ font-size:14px }
+  .card-sub{ font-size:12px }
+  .stars{ font-size:12px }
+}
+@media (max-width:420px){
+  .grid-container{ grid-template-columns: repeat(1, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .grid-container {
+    grid-template-columns: repeat(4, 1fr); /* ยังคง 4 อันต่อแถว */
+    gap: 8px; /* ลดช่องว่างบนมือถือ */
+    padding: 10px 5px;
+  }
+
+  .comic-card {
+    max-width: 85px; /* ย่อขนาดลงอีกสำหรับหน้าจอมือถือที่แคบมาก */
+  }
+
+  .comic-info h3 {
+    font-size: 10px; /* ย่อขนาดตัวอักษรชื่อเรื่อง */
+  }
+  
+  .card-sub {
+    font-size: 9px;
+  }
+}
+
+/* 🔗 link */
+a{
+  text-decoration: none;
+  color: inherit;
+}
