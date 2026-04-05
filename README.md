@@ -12,7 +12,7 @@ OwlBook เป็นแพลตฟอร์มอ่านการ์ตูน
 
 ## Prerequisites
 
-- Node.js 18+
+- Node.js 22+
 - npm (Node Package Manager)
 - MySQL 8.0+
 
@@ -63,7 +63,7 @@ cp .env.example .env
 ### 5. Run Application
 
 ```bash
-# เริ่มการทำงานของระบบ (Backend รันที่ http://localhost:3000)
+# เริ่มการทำงานของระบบ (Backend รันที่ http://localhost:4000)
 npm run dev
 
 # เริ่มการทำงานของส่วนติดต่อผู้ใช้ (Frontend รันที่ http://localhost:5173)
