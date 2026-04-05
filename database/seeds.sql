@@ -1,94 +1,69 @@
--- Use the schema
-USE `mydb`;
+SET FOREIGN_KEY_CHECKS = 0;
 
--- -----------------------------------------------------
--- Insert Roles
--- -----------------------------------------------------
-INSERT INTO `roles` (`name`) VALUES 
-('Admin'),
-('Author'),
-('Reader');
+TRUNCATE TABLE `roles`;
+TRUNCATE TABLE `users`;
+TRUNCATE TABLE `cartoons`;
+TRUNCATE TABLE `cartoon_categories`;
+TRUNCATE TABLE `cartoon_episodes`;
+TRUNCATE TABLE `author_cartoon`;
+TRUNCATE TABLE `cartoons_category_lists`;
 
--- -----------------------------------------------------
--- Insert Users
--- -----------------------------------------------------
--- Note: Passwords are just placeholders. 
--- Role 1: Admin, 2: Author, 3: Reader
-INSERT INTO `users` (`email`, `password`, `roles_id`, `coin`) VALUES 
-('admin@webtoon.th', 'hashed_pass_1', 1, 9999),
-('somchai_author@gmail.com', 'hashed_pass_2', 2, 500),
-('jane_doe@outlook.com', 'hashed_pass_3', 2, 120),
-('kanya_reader@gmail.com', 'hashed_pass_4', 3, 50),
-('user_test01@gmail.com', 'hashed_pass_5', 3, 0);
+-- 1. ROLES
+INSERT INTO `roles` (`id`, `name`) VALUES 
+(1, 'admin'),
+(2, 'provider'),
+(3, 'member');
 
--- -----------------------------------------------------
--- Insert Cartoon Categories
--- -----------------------------------------------------
-INSERT INTO `cartoon_categories` (`name`) VALUES 
-('Romance (โรแมนติก)'),
-('Action (แอคชั่น)'),
-('Horror (สยองขวัญ)'),
-('Comedy (ตลก)'),
-('Fantasy (แฟนตาซี)');
+-- 2. USERS (Admin and Authors)
+INSERT INTO `users` (`id`, `email`, `password`, `roles_id`, `coin`) VALUES 
+(1, 'admin@owlbook.com', '$2b$10$7vB9u5768S4y72H6u540OOn3W6pT6p386Z2N96p8K2q0j789w5n4i', 1, 9999),
+(2, 'bigakimkkulppal@author.owlbook.com', '$2b$10$7vB9u5768S4y72H6u540OOn3W6pT6p386Z2N96p8K2q0j789w5n4i', 2, 0),
+(3, 'haiendeumodoteamthej@author.owlbook.com', '$2b$10$7vB9u5768S4y72H6u540OOn3W6pT6p386Z2N96p8K2q0j789w5n4i', 2, 0),
+(4, 'thebullymanga@author.owlbook.com', '$2b$10$7vB9u5768S4y72H6u540OOn3W6pT6p386Z2N96p8K2q0j789w5n4i', 2, 0),
+(5, 'wuermanhuayexiao@author.owlbook.com', '$2b$10$7vB9u5768S4y72H6u540OOn3W6pT6p386Z2N96p8K2q0j789w5n4i', 2, 0),
+(6, 'unknown@author.owlbook.com', '$2b$10$7vB9u5768S4y72H6u540OOn3W6pT6p386Z2N96p8K2q0j789w5n4i', 2, 0),
+(7, 'moodyuju@author.owlbook.com', '$2b$10$7vB9u5768S4y72H6u540OOn3W6pT6p386Z2N96p8K2q0j789w5n4i', 2, 0),
+(8, 'limhyeongsdcknight@author.owlbook.com', '$2b$10$7vB9u5768S4y72H6u540OOn3W6pT6p386Z2N96p8K2q0j789w5n4i', 2, 0);
 
--- -----------------------------------------------------
--- Insert Cartoons
--- -----------------------------------------------------
-INSERT INTO `cartoons` (`name`, `description`) VALUES 
-('Love in Bangkok', 'A sweet story about life in the big city. เรื่องราวความรักวุ่นๆ กลางกรุงกรุงเทพฯ'),
-('The Legend of Siam', 'An epic fantasy set in ancient Thailand. มหากาพย์แฟนตาซีในยุคกรุงศรีอยุธยา'),
-('Office Ghost (ผีออฟฟิศ)', 'Every office has a secret. Working late might be a mistake. ทุกออฟฟิศมีเรื่องเล่า... การอยู่ดึกอาจทำให้คุณเจอดี'),
-('Cat Master (นายท่านเหมียว)', 'Daily life of a cat owner who is actually a servant. ชีวิตประจำวันของทาสแมวกับเจ้านายสุดป่วน');
+-- 3. CARTOONS
+INSERT INTO `cartoons` (`id`, `name`, `description`) VALUES 
+(1, 'Chronicles of the Lazy Sovereign', 'นักรบผู้ยิ่งใหญ่ผู้ยุติความโกลาหลที่รุมเร้าโลก...'),
+(2, 'Echoes of the Reverse Planet', 'แบคอูฮยอน นักศึกษาธรรมดาๆ ที่ต้องกลับมาจากการเป็นสตรีมเมอร์ในเกม VR...'),
+(3, 'I Cleared 999 Floors in Advance', 'เรื่องราวของลู่หมิงที่เคลียร์หอคอยไปแล้ว 999 ชั้นก่อนใครเพื่อน...'),
+(4, 'Magic Emperor', 'จักรพรรดิปีศาจ จั๋ว ฟาน เกิดใหม่เป็นพ่อบ้านในตระกูลที่กำลังตกอับ...'),
+(5, 'Paranoid CEO Please Let Go', 'กู่เสี่ยวหรานถูกบังคับแต่งงานเพื่อช่วยชีวิตบิดา...'),
+(6, 'Putting My Life on the Line', 'อามาโนะ เคียวเฮย์ ชายผู้ถูกโชคทอดทิ้งแต่กลับกลายเป็นกระแสไวรัล...'),
+(7, 'Solo Farming In The Tower', 'เซจุน ชายหนุ่มที่ติดอยู่ในพื้นที่ลับของหอคอยและต้องทำฟาร์มเพื่อเอาชีวิตรอด...');
 
--- -----------------------------------------------------
--- Link Authors to Cartoons
--- -----------------------------------------------------
+-- 4. CATEGORIES
+INSERT INTO `cartoon_categories` (`id`, `name`) VALUES 
+(1, 'Action'), (2, 'Adventure'), (3, 'Comedy'), (4, 'Martial Arts'), 
+(5, 'Shonen'), (6, 'Manhwa (เกาหลี)'), (7, 'Drama'), (8, 'Fantasy'), 
+(9, 'Psychological'), (10, 'Revenge'), (11, 'Manhua (จีน)'), (12, 'Romance'), 
+(13, 'Dungeon');
+
+-- 5. AUTHOR MAPPING
 INSERT INTO `author_cartoon` (`users_id`, `cartoons_id`) VALUES 
-(2, 1), -- Somchai wrote Love in Bangkok
-(2, 2), -- Somchai wrote Legend of Siam
-(3, 3), -- Jane wrote Office Ghost
-(3, 4); -- Jane wrote Cat Master
+(2, 1), (3, 2), (4, 3), (5, 4), (6, 5), (7, 6), (8, 7);
 
--- -----------------------------------------------------
--- Link Cartoons to Categories
--- -----------------------------------------------------
+-- 6. CATEGORY MAPPING (Fixed from 'map' to IDs)
 INSERT INTO `cartoons_category_lists` (`cartoon_categories_id`, `cartoons_id`) VALUES 
-(1, 1), -- Romance
-(4, 1), -- Comedy
-(2, 2), -- Action
-(5, 2), -- Fantasy
-(3, 3), -- Horror
-(4, 4); -- Comedy
+(1,1), (4,1), (6,1), -- Lazy Sovereign: Action, Martial Arts, Manhwa
+(1,2), (8,2), (6,2), -- Echoes: Action, Fantasy, Manhwa
+(1,3), (2,3), (13,3), -- 999 Floors: Action, Adventure, Dungeon
+(1,4), (4,4), (11,4), -- Magic Emperor: Action, Martial Arts, Manhua
+(7,5), (12,5), (9,5), -- Paranoid CEO: Drama, Romance, Psychological
+(1,6), (8,6), (2,6),  -- Life on Line: Action, Fantasy, Adventure
+(2,7), (3,7), (13,7); -- Solo Farming: Adventure, Comedy, Dungeon
 
--- -----------------------------------------------------
--- Insert Cartoon Episodes
--- -----------------------------------------------------
+-- 7. EPISODES
 INSERT INTO `cartoon_episodes` (`cartoon_id`, `number`, `title`, `price`) VALUES 
-(1, 1, 'The Meeting (การพบกันครั้งแรก)', 0),
-(1, 2, 'First Date (เดทแรกสุดเขิน)', 5),
-(2, 1, 'The Awakening (การตื่นขึ้นของพลัง)', 0),
-(3, 1, 'Overtime (ทำงานล่วงเวลา)', 0),
-(3, 2, 'The Elevator (ลิฟต์อาถรรพ์)', 10),
-(4, 1, 'Welcome Home (ยินดีต้อนรับนายท่าน)', 0);
+(1, 1, 'Episode 1', 0), (1, 2, 'Episode 2', 0), (1, 3, 'Episode 3', 10),
+(2, 1, 'Episode 1', 0), (2, 2, 'Episode 2', 0), (2, 3, 'Episode 3', 10),
+(3, 1, 'Episode 1', 0), (3, 2, 'Episode 2', 0), (3, 3, 'Episode 3', 10),
+(4, 1, 'Episode 1', 0), (4, 2, 'Episode 2', 0), (4, 3, 'Episode 3', 10),
+(5, 1, 'Episode 1', 0), (5, 2, 'Episode 2', 0), (5, 3, 'Episode 3', 10),
+(6, 1, 'Episode 1', 0), (6, 2, 'Episode 2', 0), (6, 3, 'Episode 3', 10),
+(7, 1, 'Episode 1', 0), (7, 2, 'Episode 2', 0), (7, 3, 'Episode 3', 10);
 
--- -----------------------------------------------------
--- Insert Payments (Buying Coins)
--- -----------------------------------------------------
-INSERT INTO `payments` (`users_id`, `srcid`, `amount`, `status`) VALUES 
-(4, 'PAY-998877', 100, 1), -- Success
-(5, 'PAY-112233', 50, 0);   -- Pending
-
--- -----------------------------------------------------
--- Insert User Favourites
--- -----------------------------------------------------
-INSERT INTO `user_favourites` (`user_id`, `cartoons_id`) VALUES 
-(4, 1),
-(4, 4);
-
--- -----------------------------------------------------
--- Insert User Cartoon Histories (Purchased/Read episodes)
--- -----------------------------------------------------
-INSERT INTO `user_cartoon_histories` (`cartoon_ep_id`, `user_id`, `paid_amount`) VALUES 
-(1, 4, 0), -- Read Free EP
-(2, 4, 5), -- Paid 5 coins for EP 2
-(5, 4, 10); -- Paid 10 coins for Office Ghost EP 2
+SET FOREIGN_KEY_CHECKS = 1;
