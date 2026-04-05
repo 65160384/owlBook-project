@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router"
-import { mockUserStore } from "@/store/mockUserStore"
+import { userStore } from "@/store/userStore"
 
 import Home from "../pages/Home.vue"
 import Login from "../pages/Login.vue"
@@ -42,8 +42,8 @@ const router = createRouter({
 // ระบบตรวจสอบสิทธิ์ (RBAC) ตาม Activity Diagram
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
-    if (!mockUserStore.isLoggedIn) return next('/login');
-    const role = mockUserStore.role;
+    if (!userStore.isLoggedIn) return next('/login');
+    const role = userStore.role;
     if (Array.isArray(to.meta.role)) {
       if (!to.meta.role.includes(role)) return next('/');
     } else if (to.meta.role && role !== to.meta.role) {
