@@ -173,7 +173,7 @@ describe('AuthService.login', () => {
 - [x] Developer 2: 24/02/2026
 - [x] Tech Lead: 24/02/2026
 
-✅ Approved by: [PPhatcha Saengphoema], 25/02/2026
+✅ Approved by: [Phatcha Saengphoema], 25/02/2026
 
 Comments/Suggestions:
 -
