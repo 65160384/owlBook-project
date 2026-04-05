@@ -15,18 +15,33 @@ app.use('/api', comicRoutes);
 app.use('/api', uploadRoutes);
 app.use('/api', paymentRoutes);
 app.use('/api/auth', authRoutes);
-sequelize.sync({ alter: true })
-  .then(async () => {
-    console.log('Database synced successfully.');
-    const { Role } = require('./models');
-    const rolesToSeed = ['admin', 'provider', 'member'];
-    for (const roleName of rolesToSeed) {
-      await Role.findOrCreate({ where: { name: roleName } });
-    }
-    app.listen(PORT, () => {
-      console.log(`Backend server running on port ${PORT}`);
+// Export the Express app for tests. When running directly, start DB sync and server.
+module.exports = app;
+
+// helper to initialize DB for test runs
+app.initDB = async function initDB(options = { force: false }) {
+  const { Role } = require('./models');
+  await require('./models').sequelize.sync({ force: options.force });
+  const rolesToSeed = ['admin', 'provider', 'member'];
+  for (const roleName of rolesToSeed) {
+    await Role.findOrCreate({ where: { name: roleName } });
+  }
+};
+
+if (require.main === module) {
+  sequelize.sync({ alter: true })
+    .then(async () => {
+      console.log('Database synced successfully.');
+      const { Role } = require('./models');
+      const rolesToSeed = ['admin', 'provider', 'member'];
+      for (const roleName of rolesToSeed) {
+        await Role.findOrCreate({ where: { name: roleName } });
+      }
+      app.listen(PORT, () => {
+        console.log(`Backend server running on port ${PORT}`);
+      });
+    })
+    .catch((err) => {
+      console.error('Unable to connect to the database:', err);
     });
-  })
-  .catch((err) => {
-    console.error('Unable to connect to the database:', err);
-  });
+}

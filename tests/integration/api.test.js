@@ -1,23 +1,10 @@
-describe("Integration Test", () => {
+const request = require("supertest");
+const app = require("../../src/index");
 
-    test("register → login → profile", () => {
-      expect(true).toBe(true);
-    });
-  
-    test("topup → balance", () => {
-      expect(true).toBe(true);
-    });
-  
-    test("unlock → read", () => {
-      expect(true).toBe(true);
-    });
-  
-    test("favorite → list", () => {
-      expect(true).toBe(true);
-    });
-  
-    test("search → detail", () => {
-      expect(true).toBe(true);
-    });
-  
+describe("Integration Test (API)", () => {
+  test("GET /api/health returns UP", async () => {
+    const res = await request(app).get("/api/health");
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("status", "UP");
   });
+});
