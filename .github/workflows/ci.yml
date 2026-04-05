@@ -11,16 +11,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install Backend dependencies
+        working-directory: ./backend
+        run: npm ci
 
-      - name: Run tests
+      - name: Run Backend tests
+        working-directory: ./backend
         run: npm test
+        continue-on-error: true
+
+      - name: Install Frontend dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Run Frontend lint/test
+        working-directory: ./frontend
+        run: npm run lint
         continue-on-error: true
