@@ -1,0 +1,48 @@
+{
+  "name": "Echoes of the Reverse Planet สตรีมเมอร์พลังเหนือโลก",
+  "status": "Ongoing",
+  "author": "Haiendeu, Modo (모도), Team the JICK",
+  "year": "2025",
+  "views": "183.3K",
+  "rating": "8.7",
+  "description": "เรื่องย่อ: หลังจากถูกย้ายไปยังมิติ [Reverse Planet] เกม VR ออนไลน์ที่ได้รับความนิยมมากที่สุดในโลก แบคอูฮยอน นักศึกษาธรรมดาๆ ก็กลับมา นี่คือการกลับบ้านที่เขาใฝ่ฝัน… แต่เกมบ้าๆ นี่ยังคงดำเนินไปราวกับไม่มีอะไรเกิดขึ้น",
+  "ref": "Naver Webtoon (Naver), Naver Series (Naver)",
+  "freeEpisodes": 1,
+  "tags": [
+    "Action",
+    "Drama",
+    "Fantasy",
+    "Psychological",
+    "shonen",
+    "มังงะเกาหลี",
+    "ล้างแค้น"
+  ],
+  "episodes": [
+    {
+      "id": "ep3",
+      "number": 3,
+      "date": "April 13, 2026",
+      "isLocked": true,
+      "price": 10
+    },
+    {
+      "id": "ep2",
+      "number": 2,
+      "date": "April 1, 2026",
+      "isLocked": true,
+      "price": 10
+    },
+    {
+      "id": "ep1",
+      "number": 1,
+      "date": "March 25, 2026",
+      "isLocked": false
+    },
+    {
+      "id": "ep0",
+      "number": 0,
+      "date": "March 15, 2026",
+      "isLocked": false
+    }
+  ]
+}

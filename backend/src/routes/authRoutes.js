@@ -1,0 +1,11 @@
+const express = require('express');
+const router = express.Router();
+const authController = require('../controllers/authController');
+router.post('/register', authController.register);
+router.post('/login', authController.login);
+router.get('/profile', authController.verifyToken, authController.getProfile);
+router.post('/update-coins', authController.verifyToken, authController.updateCoins);
+router.post('/unlock-episode', authController.verifyToken, authController.unlockEpisode);
+router.post('/toggle-favorite', authController.verifyToken, authController.toggleFavorite);
+router.get('/authors', authController.verifyToken, authController.getAuthors);
+module.exports = router;

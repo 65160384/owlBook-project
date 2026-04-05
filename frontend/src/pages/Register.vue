@@ -67,27 +67,34 @@ const password = ref('');
 const confirmPassword = ref('');
 const errorMessage = ref('');
 
+const BACKEND = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
+
 const handleRegister = async () => {
   errorMessage.value = '';
 
-  // ตรวจสอบรหัสผ่านตรงกันก่อน (ทำที่ frontend)
   if (password.value !== confirmPassword.value) {
     errorMessage.value = 'Passwords do not match.';
     return;
   }
 
-  // สำหรับ Dev: นำข้อมูลนี้ไปเรียก api.js (Endpoint สมัครสมาชิก) และเก็บ Token ใน userStore.js
-  // console.log('Register attempt:', { email: email.value, password: password.value });
-
   try {
-    // จำลองว่าสำเร็จ
-    const success = true;
+    const res = await fetch(`${BACKEND}/api/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        email: email.value, 
+        password: password.value,
+        role: email.value.includes('admin') ? 'admin' : (email.value.includes('provider') ? 'provider' : 'member')
+      })
+    });
 
-    if (success) {
-      // สมัครสำเร็จ ไปที่หน้าหลัก
-      router.push('/');
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("Registration successful! Please login.");
+      router.push('/login');
     } else {
-      errorMessage.value = 'Email already exists or invalid data.';
+      errorMessage.value = data.error || 'Email already exists or invalid data.';
     }
   } catch (error) {
     errorMessage.value = 'An error occurred during registration. Please try again.';
