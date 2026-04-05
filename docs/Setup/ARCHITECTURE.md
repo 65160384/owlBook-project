@@ -52,11 +52,109 @@ project-root/
 - **Application Layer (ExpressJS)**: ประมวลผลตรรกะทางธุรกิจและจัดการ 15 API Endpoints
 - **Data Layer (MySQL)**: จัดเก็บข้อมูลการ์ตูนและประวัติการทำรายการอย่างเป็นระบบ
 
+## Client-Server Architecture
+
+OwlBook เป็น Web Application ที่ใช้รูปแบบ Client–Server Architecture  
+โดยแยกระบบออกเป็น 3 ส่วนหลัก ได้แก่ Client, Server และ Database
+
+### Architecture Diagram
+
 ```text
-[User] <--> [Frontend Application] <--> [Backend Service 1] <--> [Database 1]
-                                    |
-                                    +--> [Backend Service 2] <--> [External API]                           
++-------------+        HTTP/API        +------------------+        SQL        +-----------+
+|   Client    |  <------------------>  |  Application     |  <------------->  | Database  |
+|   (Vue.js)  |                        |  Server          |                   |  MySQL    |
+|   Browser   |                        |  Node.js Express |                   |           |
++-------------+                        +------------------+                   +-----------+                       
 ```
+## MVC Architecture
+
+ระบบ OwlBook ใช้แนวคิด Model-View-Controller (MVC)  
+เพื่อแยกหน้าที่ของระบบออกเป็นส่วนต่าง ๆ ทำให้โค้ดมีโครงสร้างที่ชัดเจนและดูแลรักษาง่าย
+```text
+        User
+         |
+         v
+      (View)
+     Vue.js UI
+         |
+         v
+     Controller
+   Express Routes
+         |
+         v
+        Model
+   Database Access
+         |
+         v
+       MySQL                 
+```
+### Components
+
+**View**
+- Vue.js Components
+- แสดงผล UI
+
+**Controller**
+- Express Routes
+- รับ request และควบคุม flow
+
+**Model**
+- ติดต่อ MySQL
+- Query และจัดการข้อมูล
+## Layered Architecture
+
+ระบบ OwlBook ถูกออกแบบด้วย Layered Architecture  
+เพื่อแยกความรับผิดชอบของแต่ละส่วนของระบบ
+### Architecture Diagram
+```text
++-------------------------+
+| Presentation Layer      |
+| Vue.js Components       |
++-------------------------+
+            |
+            v
++-------------------------+
+| Controller Layer        |
+| Express Routes          |
++-------------------------+
+            |
+            v
++-------------------------+
+| Service Layer           |
+| Business Logic          |
++-------------------------+
+            |
+            v
++-------------------------+
+| Data Access Layer       |
+| Models / Queries        |
++-------------------------+
+            |
+            v
++-------------------------+
+| Database Layer          |
+| MySQL                   |
++-------------------------+           
+```
+### Layers
+
+**Presentation Layer**
+- Vue.js
+- UI และ interaction
+
+**Controller Layer**
+- Express routes
+- รับ HTTP request
+
+**Service Layer**
+- Business logic
+- ประมวลผลข้อมูล
+
+**Data Layer**
+- ติดต่อฐานข้อมูล
+
+**Database**
+- MySQL
 
 ## 3. Core Components
 - **Frontend**: พัฒนาด้วย Vue.js เน้นความลื่นไหลในการเลื่อนอ่านการ์ตูน (UC-08).

@@ -1,0 +1,239 @@
+/* src/assets/styles/reader.css */
+
+/* --- 1. Base Reader Layout --- */
+.reader {
+  width: 100%;
+  background-color: transparent; /* สำคัญ: เพื่อให้เห็นสีเทาอ่อนจาก global.css */
+  padding-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* จัดทุกอย่างให้กึ่งกลางหน้าตามแนวนอน */
+}
+
+/* --- 2. Header Container (สีสว่าง ขอบมน มีเงา) --- */
+.reader-header-container {
+  background: white;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* มีเงานุ่มๆ */
+  border-radius: 0 0 20px 20px; /* ขอบมนด้านล่าง */
+  width: 100%;
+}
+
+/* แก้ไข: จัดกึ่งกลางชื่อเรื่องและตอน */
+.reader-header {
+  display: flex;
+  justify-content: center; /* ใหม่: จัดกึ่งกลางแนวนอน */
+  align-items: center;
+  gap: 20px;
+  max-width: 1200px; /* ขนาดความกว้างหลัก */
+  margin: 0 auto;
+  padding: 20px;
+  position: relative; /* ใหม่: เพื่อใช้วางปุ่ม Back ชิดซ้าย */
+}
+
+/* ใหม่: ปุ่ม Back ชิดซ้าย (ไม่ดันชื่อเรื่อง) */
+.back-link {
+  position: absolute;
+  left: 20px;
+  background: #f1f5f9; /* สีเทาอ่อน */
+  color: #475569; /* ตัวหนังสือเข้มจางๆ */
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.3s ease; /* เพิ่ม Transition เพื่อความนุ่มนวล */
+  text-decoration: none;
+}
+
+.back-link:hover {
+  background: #e2e8f0; /* เทาเข้มขึ้นเวลาเมาส์วาง */
+  color: #1e293b; /* แดงเข้มขึ้น */
+}
+
+/* ใหม่: จัดกึ่งกลางตัวหนังสือ */
+.title-info {
+  text-align: center;
+}
+
+.title-info h1 {
+  font-size: 28px;
+  margin: 0;
+  color: #1e293b;
+  line-height: 1.2;
+}
+
+.title-info p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* --- 3. Controls Layout (คงเดิมแต่ปรับ Padding) --- */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* ลดระยะห่างเพื่อให้ลงตัวในแถวเดียว */
+  flex-wrap: nowrap; /* บังคับให้อยู่แถวเดียวเท่านั้น */
+  padding: 15px 10px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.controls.bottom {
+  margin-top: 40px;
+}
+
+/* --- 4. Beautify ปุ่มและ Dropdown (อันที่ดีอยู่แล้วคงไว้) --- */
+/* ปรับปรุง: ปุ่ม Navigation (Previous/Next) ให้ดู Pro ขึ้น */
+.btn.nav-btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 80px; /* ลดความกว้างขั้นต่ำ */
+  justify-content: center;
+  white-space: nowrap; /* กันตัวหนังสือตัดบรรทัด */
+}
+
+.btn.nav-btn:hover { transform: translateY(-1px) }
+
+/* แก้ไข: Dropdown (Select) ให้ดูสวยงาม (คงอันที่นายชอบไว้) */
+.custom-select {
+  flex: 1 1 auto; /* ให้ช่องเลือกยืดหยุ่นตามพื้นที่ */
+  min-width: 80px;
+  max-width: 150px; /* จำกัดความกว้างไม่ให้แย่งที่ปุ่ม */
+  padding: 8px 25px 8px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  appearance: none;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
+  color: var(--text-h);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 20 20'%3E%3Cpath fill='%23666' d='M5 7l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+/* Dark theme specific reader tweaks */
+[data-theme='dark'] .reader-header-container{ background: var(--header-bg) }
+[data-theme='dark'] .back-link{ background: var(--input-bg); color: var(--text-h) }
+[data-theme='dark'] .title-info h1{ color: var(--text-h) }
+[data-theme='dark'] .title-info p{ color: rgba(255,255,255,0.78) }
+[data-theme='dark'] .custom-select option{ background: var(--input-bg); color: var(--text-h) }
+
+/* --- 5. Content Area (คงเดิม) --- */
+.content {
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  min-height: 500px;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.comic-img {
+  width: 100%;
+  max-width: 1000px; /* ขนาดความกว้างหลัก */
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); /* เพิ่มเงาให้รูปดูเด่น */
+}
+
+.page { cursor: pointer; }
+
+/* --- 6. Scroll Top (คงเดิม) --- */
+.scroll-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #22c55e;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+  border: none;
+}
+
+.scroll-top:hover { background: #16a34a; transform: scale(1.1); }
+.responsive-img {
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+  .controls {
+    gap: 8px;
+    padding: 10px 5px;
+  }
+  .nav-btn {
+    min-width: 60px;
+    font-size: 12px;
+  }
+}
+/* --- 7. Mobile Optimization (รองรับ responsive บนมือถือ) --- */
+@media (max-width: 768px) {
+  .reader-header {
+    flex-direction: row; 
+    justify-content: center;
+    padding: 10px;
+  }
+  
+  .back-link {
+    padding: 6px 10px;
+    font-size: 11px;
+    min-width: fit-content;
+  }
+  
+  .title-info h1 { font-size: 16px; }
+  .title-info p { font-size: 12px; }
+
+  
+  .btn.nav-btn { 
+    min-width: 70px; 
+    font-size: 10px; 
+    padding: 8px 10px; 
+  }
+  
+  .custom-select { 
+    padding: 8px 25px 8px 10px;
+    font-size: 11px;
+    background-position: right 8px center; 
+  }
+}
+
+@media (max-width: 600px) {
+  .controls {
+    gap: 5px; /* ลดช่องว่างให้น้อยที่สุด */
+    padding: 10px 5px;
+  }
+  
+  .btn.nav-btn { 
+    min-width: 45px; /* เล็กลงมากสำหรับมือถือ */
+    padding: 8px 6px; 
+    font-size: 11px;
+  }
+
+  .nav-btn span { display: none; } /* ซ่อนตัวหนังสือ Next/Prev โชว์แค่ลูกศรในมือถือถ้าจำเป็น */
+
+  .custom-select { 
+    padding: 6px 20px 6px 6px;
+    font-size: 11px;
+    min-width: 60px;
+  }
+}

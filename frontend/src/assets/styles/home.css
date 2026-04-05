@@ -1,0 +1,103 @@
+.home {
+  width: 100%;
+  padding: 20px;
+}
+
+.hero-banner {
+  background: none;
+  padding: 28px 0 12px
+}
+
+.hero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  color: var(--text-h);
+  padding: 0 18px
+}
+
+.discover-bar {
+  max-width: 1200px;
+  margin: 18px auto;
+  display: flex;
+  gap: 8px;
+  /* ลดช่องว่างเพื่อประหยัดพื้นที่ */
+  align-items: center;
+  padding: 0 18px;
+  flex-wrap: nowrap;
+  /* บังคับให้อยู่บรรทัดเดียวเสมอ */
+  box-sizing: border-box;
+}
+
+.discover-search {
+  flex: 3;
+  /* ให้ช่องค้นหาใช้พื้นที่มากกว่า */
+  min-width: 0;
+  /* สำคัญ: เพื่อให้หดได้เล็กกว่าเนื้อหาด้านใน */
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text-h);
+  /* */
+}
+
+.discover-filter {
+  flex: 1;
+  /* ให้ช่องหมวดหมู่สั้นลง */
+  min-width: 90px;
+  /* กำหนดความกว้างขั้นต่ำที่สั้นลง */
+  padding: 10px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text-h);
+  /* */
+}
+
+/* Keep buttons visually consistent and allow scale transform without breaking layout */
+.btn-action {
+  transition: transform 0.12s ease, opacity 0.12s ease;
+  border-radius: 10px
+}
+
+.btn-action:active {
+  transform: scale(0.98)
+}
+
+h2 {
+  max-width: 1200px;
+  margin: 8px auto 6px;
+  padding: 0 18px
+}
+
+.home-content {
+  max-width: 1200px;
+  margin: 12px auto;
+  display: flex;
+  gap: 28px;
+  padding: 0 18px
+}
+
+.main-col {
+  flex: 1
+}
+
+.sidebar {
+  width: 320px;
+  max-width: 320px;
+  box-sizing: border-box
+}
+
+@media (max-width: 480px) {
+  .discover-bar {
+    gap: 5px;
+    padding: 0 10px;
+  }
+
+  .discover-search,
+  .discover-filter {
+    font-size: 13px;
+    /* ย่อขนาดตัวอักษรบนมือถือ */
+    padding: 8px;
+  }
+}
