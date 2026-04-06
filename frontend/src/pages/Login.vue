@@ -19,14 +19,14 @@
         <button type="submit" class="login-button">Login</button>
       </form>
 
-      <div class="dev-test-buttons" style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+      <!-- <div class="dev-test-buttons" style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
         <button @click="email = 'admin@owlbook.com'; handleLogin()"
           style="font-size: 11px; padding: 5px; cursor: pointer;">Test Admin</button>
         <button @click="email = 'provider@owlbook.com'; handleLogin()"
           style="font-size: 11px; padding: 5px; cursor: pointer;">Test Provider</button>
         <button @click="email = 'user@test.com'; handleLogin()"
           style="font-size: 11px; padding: 5px; cursor: pointer;">Test Member</button>
-      </div>
+      </div> -->
 
       <div class="register-link-container">
         <p>Don't have an account?</p>

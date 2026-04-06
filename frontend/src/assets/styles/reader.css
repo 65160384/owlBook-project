@@ -56,7 +56,12 @@
 }
 
 .title-info h1 {
+<<<<<<< Updated upstream
   font-size: 28px;
+=======
+  font-size: 1.1rem;
+  text-align: center;
+>>>>>>> Stashed changes
   margin: 0;
   color: #1e293b;
   line-height: 1.2;
@@ -194,10 +199,28 @@
     padding: 10px;
   }
   
+<<<<<<< Updated upstream
   .back-link {
     padding: 6px 10px;
     font-size: 11px;
     min-width: fit-content;
+=======
+  .controls { 
+    padding: 0 10px; 
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .select-group {
+    order: 3;
+    width: 100%;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  .nav-btn { 
+    padding: 8px 12px; 
+    font-size: 0.8rem; 
+    flex: 1; /* Make Prev/Next buttons evenly fill the top row */
+>>>>>>> Stashed changes
   }
   
   .title-info h1 { font-size: 16px; }

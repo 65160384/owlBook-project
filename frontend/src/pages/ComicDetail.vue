@@ -98,6 +98,7 @@ const isLocked = (ep) => {
   return !mockUserStore.isUnlocked(comic.value.id, ep.id);
 };
 
+<<<<<<< Updated upstream
 // จัดการการเข้าถึงตอนอ่าน
 const handleEpisodeAccess = (ep) => {
   const freeLimit = comic.value.freeEpisodes || 0;
@@ -110,12 +111,26 @@ const handleEpisodeAccess = (ep) => {
 
   // 2. ถ้าเป็น Guest
   if (!mockUserStore.isLoggedIn) {
+=======
+const handleEpisodeAccess = async (ep) => {
+  // 1. ถ้าตอนไม่ได้ล็อค หรือมีสิทธิ์เข้าถึงพิเศษ (Admin/Provider) ให้เข้าอ่านได้เลย
+  // (isLocked จัดการตรวจสอบทั้งตอนฟรีปกติตาม freeEpisodes และตอนที่ price = 0 แล้ว)
+  if (!isLocked(ep) || ['admin', 'provider'].includes(userStore.role)) {
+    router.push(`/reader/${comic.value.id}/${ep.id}`);
+    return;
+  }
+
+  // 2. ถ้าถึงตรงนี้แปลว่าตอน "ถูกล็อค" และต้องจ่าย Coins
+  // ถ้าเป็น Guest (ยังไม่ได้ Login)
+  if (!userStore.isLoggedIn) {
+>>>>>>> Stashed changes
     if (confirm("ตอนนี้ต้องใช้เหรียญปลดล็อก กรุณาสมัครสมาชิกหรือเข้าสู่ระบบก่อนครับ")) {
       router.push('/login');
     }
     return;
   }
 
+<<<<<<< Updated upstream
   // 3. เช็คว่าเคยซื้อหรือยัง
   if (mockUserStore.isUnlocked(comic.value.id, ep.id)) {
     router.push(`/reader/${comic.value.id}/${ep.id}/1`);
@@ -126,6 +141,14 @@ const handleEpisodeAccess = (ep) => {
   if (confirm(`ปลดล็อกตอนที่ ${ep.number} ใช้ ${ep.price || 10} Coins?`)) {
     if (mockUserStore.unlockEpisode(comic.value.id, ep.id, ep.price || 10)) {
       router.push(`/reader/${comic.value.id}/${ep.id}/1`);
+=======
+  // 3. ยืนยันการหัก Coins เพื่อปลดล็อก (สำหรับ Member)
+  const price = ep.price || 10;
+  if (confirm(`ปลดล็อกตอนที่ ${ep.number} ใช้ ${price} Coins?`)) {
+    const success = await userStore.unlockEpisode(comic.value.id, ep.id, price);
+    if (success) {
+      router.push(`/reader/${comic.value.id}/${ep.id}`);
+>>>>>>> Stashed changes
     } else {
       if (confirm("เหรียญไม่พอ ต้องการไปหน้าเติมเหรียญหรือไม่?")) {
         router.push('/coin');

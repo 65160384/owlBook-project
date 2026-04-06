@@ -9,10 +9,12 @@ OwlBook เป็นแพลตฟอร์มอ่านการ์ตูน
 - **Language**: Node.js (JavaScript)
 - **Framework**: Express.js (Backend), Vue.js (Frontend)
 - **Database**: MySQL
+- **Testing**: Jest (Unit & Integration Testing)
+- **Linting**: ESLint v10
 
 ## Prerequisites
 
-- Node.js 18+
+- Node.js 22+
 - npm (Node Package Manager)
 - MySQL 8.0+
 
@@ -28,18 +30,11 @@ cd owlBook-project
 ### 2. Install Dependencies
 
 ```bash
-# ติดตั้ง Dependencies สำหรับ Backend (Root Folder)
+# ติดตั้ง Dependencies ทั้งหมด (Root, Backend, Frontend)
 npm install
-
-# ติดตั้ง Dependencies สำหรับ Frontend
-cd src/main/frontend
-npm install
-cd ../../../
-```
-
-# Node.js
-```bash
-npm install
+cd backend && npm install
+cd ../frontend && npm install
+cd ..
 ```
 ### 3. Configure Database
 
@@ -63,19 +58,15 @@ cp .env.example .env
 ### 5. Run Application
 
 ```bash
-# เริ่มการทำงานของระบบ (Backend รันที่ http://localhost:3000)
-npm run dev
+# เริ่มการทำงานของระบบ (Backend รันที่ http://localhost:4000)
+cd src/backend
+npm start
+cd ..
 
 # เริ่มการทำงานของส่วนติดต่อผู้ใช้ (Frontend รันที่ http://localhost:5173)
-cd src/main/frontend
+cd src/frontend
 npm run dev
 ```
-# Node.js
-```bash
-npm start
-```
-Application runs at: http://localhost:8080
-
 ## Build & Test
 
 ```bash
@@ -85,6 +76,31 @@ npm run build
 # รันการทดสอบระบบ
 npm test
 ```
+### การทดสอบและควบคุมคุณภาพ (Quality Assurance) 
+
+เพื่อให้เป็นไปตามมาตรฐานการประกันคุณภาพในรายงาน D4 ทีมงานมีการติดตามตัวชี้วัดดังนี้: 
+
+- รันการทดสอบและดู Coverage:
+```bash
+npm run test:coverage
+```
+- ตรวจสอบ Static Analysis (ความซับซ้อนของโค้ด):
+```bash
+npx eslint frontend/src backend/src
+```
+- นับจำนวนบรรทัดโค้ด (LOC):
+```bash
+npx sloc backend/src/ frontend/src/ --exclude node_modules
+```
+### ประตูคุณภาพ (Quality Gates) 
+โครงการกำหนดเกณฑ์คุณภาพพื้นฐานไว้ดังนี้: 
+
+- ความครอบคลุมการทดสอบ (Coverage): >= 80%
+- ความซับซ้อนของฟังก์ชัน (Complexity): <= 10
+- อัตราการผ่านการทดสอบ (Pass Rate): 100 %
+- มาตรฐานเอกสาร: อ้างอิงมาตรฐาน IEEE 830 และ ISO/IEC 12207
+
+
 ## Git Workflow
 
 1. **Create branch**: git checkout -b feature/feature-name (อ้างอิงตามหมายเลข UC เช่น feature/uc-11-purchase)
@@ -106,4 +122,3 @@ See [Coding_Standards.md](Coding_Standards.md)
 - Chompunut Rueangrit(Dev2) 65160029@go.buu.ac.th
 - Piyada Chokchai (Qa1) 65160261@go.buu.ac.th
 - Pasin Yujiseree (Qa2) 65160119@go.buu.ac.th 
-
