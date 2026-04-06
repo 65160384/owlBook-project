@@ -23,10 +23,8 @@
     "sqlite3": "^6.0.1"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
     "bcryptjs": "^3.0.3",
     "eslint": "^10.2.0",
-    "eslint-plugin-complexity": "^1.0.2",
     "jest": "^30.3.0",
     "jsonwebtoken": "^9.0.3",
     "supertest": "^7.2.2"
