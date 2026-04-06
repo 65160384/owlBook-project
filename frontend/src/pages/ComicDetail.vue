@@ -98,15 +98,15 @@ const isLocked = (ep) => {
 
 // จัดการการเข้าถึงตอนอ่าน
 const handleEpisodeAccess = async (ep) => {
-  const freeLimit = comic.value.freeEpisodes || 0;
-  
-  // 1. ตอนฟรี หรือ เป็น Admin/Provider (ให้เข้าอ่านได้เลย)
-  if (ep.number <= freeLimit || ['admin', 'provider'].includes(userStore.role)) {
-    router.push(`/reader/${comic.value.id}/${ep.id}/1`);
+  // 1. ถ้าตอนไม่ได้ล็อค หรือมีสิทธิ์เข้าถึงพิเศษ (Admin/Provider) ให้เข้าอ่านได้เลย
+  // (isLocked จัดการตรวจสอบทั้งตอนฟรีปกติตาม freeEpisodes และตอนที่ price = 0 แล้ว)
+  if (!isLocked(ep) || ['admin', 'provider'].includes(userStore.role)) {
+    router.push(`/reader/${comic.value.id}/${ep.id}`);
     return;
   }
 
-  // 2. ถ้าเป็น Guest
+  // 2. ถ้าถึงตรงนี้แปลว่าตอน "ถูกล็อค" และต้องจ่าย Coins
+  // ถ้าเป็น Guest (ยังไม่ได้ Login)
   if (!userStore.isLoggedIn) {
     if (confirm("ตอนนี้ต้องใช้เหรียญปลดล็อก กรุณาสมัครสมาชิกหรือเข้าสู่ระบบก่อนครับ")) {
       router.push('/login');

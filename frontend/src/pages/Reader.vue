@@ -16,20 +16,27 @@
     <!-- Top Controls -->
     <div class="controls-wrapper top">
       <div class="controls">
-        <button class="nav-btn" @click="handlePrev" :disabled="currentIndex >= episodes.length - 1">◀ Prev</button>
+        <button class="nav-btn" @click="handlePrev" :disabled="currentIndex <= 0 && (mode === 'scroll' || currentPage <= 1)">◀ Prev</button>
         
         <div class="select-group">
+          <!-- Page Selector -->
+          <select v-if="mode === 'page' && totalPages > 0" class="custom-select" :value="currentPage" @change="handlePageSelect">
+            <option v-for="page in totalPages" :key="page" :value="page">Page {{ page }}</option>
+          </select>
+
+          <!-- Episode Selector -->
           <select class="custom-select" :value="currentEpisode.id" @change="changeEpisode($event.target.value)">
             <option v-for="ep in episodes" :key="ep.id" :value="ep.id">Ep {{ ep.number }}</option>
           </select>
           
-          <select class="custom-select" v-model="mode">
+          <!-- Mode Selector -->
+          <select class="custom-select" :value="mode" @change="handleModeSelect">
             <option value="scroll">Scroll</option>
             <option value="page">Page</option>
           </select>
         </div>
 
-        <button class="nav-btn" @click="handleNext" :disabled="currentIndex <= 0 && mode === 'scroll'">Next ▶</button>
+        <button class="nav-btn" @click="handleNext" :disabled="currentIndex >= episodes.length - 1 && (mode === 'scroll' || currentPage >= totalPages)">Next ▶</button>
       </div>
     </div>
 
@@ -83,6 +90,11 @@ const currentIndex = computed(() => episodes.value.findIndex(e => e.id === curre
 // ซิงค์ URL ลง State
 watch(() => route.params, (newParams) => {
   currentPage.value = Number(newParams.page) || 1
+  if (newParams.page) {
+    mode.value = "page"
+  } else {
+    mode.value = "scroll"
+  }
   window.scrollTo(0, 0)
 }, { immediate: true })
 
@@ -93,24 +105,68 @@ const updateUrl = () => {
   router.replace(finalPath)
 }
 
+// อัตโนมัติเปลี่ยนเป็น Page Mode เมื่อเลือกหน้า
+const handlePageSelect = (event) => {
+  currentPage.value = Number(event.target.value)
+  if (mode.value === 'scroll') {
+    mode.value = 'page'
+  }
+  updateUrl()
+}
+
+// เมื่อเปลี่ยนโหมด
+const handleModeSelect = (event) => {
+  mode.value = event.target.value
+  updateUrl()
+}
+
+// ตรวจสอบว่าตอนนั้นล็อคหรือไม่ (ใช้ตรรกะเดียวกับ ComicDetail)
+const checkIsLocked = (ep) => {
+  const freeLimit = currentComic.value?.freeEpisodes || 0;
+  if (ep.number <= freeLimit) return false;
+
+  const explicitlyLocked = ep.isLocked === true || (ep.price && ep.price > 0);
+  if (!explicitlyLocked) return false;
+
+  return !userStore.isUnlocked(currentComic.value.id, ep.id);
+};
+
+// นำทางไปยังตอนเป้าหมาย โดยคงโหมดการอ่านปัจจุบันไว้
+const executeNavigation = (targetEp, goLastPage) => {
+  let finalPath = `/reader/${currentComic.value.id}/${targetEp.id}`
+  if (mode.value === 'page') {
+    const targetPage = goLastPage ? targetEp.pages : 1
+    finalPath += `/${targetPage}`
+  }
+  router.push(finalPath)
+}
+
 // Logic การเปลี่ยนตอน (Smart Navigation)
 const navigateToEpisode = async (targetEp, goLastPage = false) => {
   if (!targetEp) return
-  const freeLimit = currentComic.value?.freeEpisodes || 0
-  const isLocked = targetEp.number > freeLimit && !userStore.isUnlocked(currentComic.value.id, targetEp.id)
   
-  if (!isLocked) {
-    const targetPage = goLastPage ? targetEp.pages : 1
-    router.push(`/reader/${currentComic.value.id}/${targetEp.id}/${targetPage}`)
-  } else {
-    if (confirm(`ตอนที่ ${targetEp.number} ติดเหรียญ ยืนยันปลดล็อกเพื่ออ่านต่อ?`)) {
-      const success = await userStore.unlockEpisode(currentComic.value.id, targetEp.id, targetEp.price || 10)
-      if (success) {
-        const targetPage = goLastPage ? targetEp.pages : 1
-        router.push(`/reader/${currentComic.value.id}/${targetEp.id}/${targetPage}`)
-      } else if (confirm("เหรียญไม่พอ ไปเติมเหรียญไหม?")) {
-        router.push("/coin")
-      }
+  const isLocked = checkIsLocked(targetEp);
+  
+  if (!isLocked || ['admin', 'provider'].includes(userStore.role)) {
+    executeNavigation(targetEp, goLastPage);
+    return;
+  }
+
+  // ถ้าเป็น Guest เพิ่งจะเลื่อนมาเจอตอนล็อก
+  if (!userStore.isLoggedIn) {
+    if (confirm("ตอนนี้ต้องใช้เหรียญปลดล็อก กรุณาสมัครสมาชิกหรือเข้าสู่ระบบก่อนครับ")) {
+      router.push('/login');
+    }
+    return;
+  }
+
+  const price = targetEp.price || 10;
+  if (confirm(`ตอนที่ ${targetEp.number} ติดเหรียญ ยืนยันปลดล็อก (${price} Coins) เพื่ออ่านต่อ?`)) {
+    const success = await userStore.unlockEpisode(currentComic.value.id, targetEp.id, price)
+    if (success) {
+      executeNavigation(targetEp, goLastPage);
+    } else if (confirm("เหรียญไม่พอ ไปหน้าเติมเหรียญหรือไม่?")) {
+      router.push("/coin")
     }
   }
 }
@@ -120,7 +176,8 @@ const handleNext = () => {
     currentPage.value++
     updateUrl()
   } else {
-    const nextEp = episodes.value[currentIndex.value - 1]
+    // เดินหน้าคือ index + 1
+    const nextEp = episodes.value[currentIndex.value + 1]
     if (nextEp) navigateToEpisode(nextEp, false)
     else alert("คุณอ่านถึงตอนล่าสุดแล้ว!")
   }
@@ -131,8 +188,10 @@ const handlePrev = () => {
     currentPage.value--
     updateUrl()
   } else {
-    const prevEp = episodes.value[currentIndex.value + 1]
+    // ถอยหลังคือ index - 1
+    const prevEp = episodes.value[currentIndex.value - 1]
     if (prevEp) navigateToEpisode(prevEp, true)
+    else alert("นี่คือตอนแรกแล้ว!")
   }
 }
 

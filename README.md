@@ -9,6 +9,8 @@ OwlBook เป็นแพลตฟอร์มอ่านการ์ตูน
 - **Language**: Node.js (JavaScript)
 - **Framework**: Express.js (Backend), Vue.js (Frontend)
 - **Database**: MySQL
+- **Testing**: Jest (Unit & Integration Testing)
+- **Linting**: ESLint v10
 
 ## Prerequisites
 
@@ -78,6 +80,31 @@ npm run build
 # รันการทดสอบระบบ
 npm test
 ```
+### การทดสอบและควบคุมคุณภาพ (Quality Assurance) 
+
+เพื่อให้เป็นไปตามมาตรฐานการประกันคุณภาพในรายงาน D4 ทีมงานมีการติดตามตัวชี้วัดดังนี้: 
+
+- รันการทดสอบและดู Coverage:
+```bash
+npm run test:coverage
+```
+- ตรวจสอบ Static Analysis (ความซับซ้อนของโค้ด):
+```bash
+npx eslint frontend/src backend/src
+```
+- นับจำนวนบรรทัดโค้ด (LOC):
+```bash
+npx sloc backend/src/ frontend/src/ --exclude node_modules
+```
+### ประตูคุณภาพ (Quality Gates) 
+โครงการกำหนดเกณฑ์คุณภาพพื้นฐานไว้ดังนี้: 
+
+- ความครอบคลุมการทดสอบ (Coverage): >= 80%
+- ความซับซ้อนของฟังก์ชัน (Complexity): <= 10
+- อัตราการผ่านการทดสอบ (Pass Rate): 100 %
+- มาตรฐานเอกสาร: อ้างอิงมาตรฐาน IEEE 830 และ ISO/IEC 12207
+
+
 ## Git Workflow
 
 1. **Create branch**: git checkout -b feature/feature-name (อ้างอิงตามหมายเลข UC เช่น feature/uc-11-purchase)
@@ -99,4 +126,3 @@ See [Coding_Standards.md](Coding_Standards.md)
 - Chompunut Rueangrit(Dev2) 65160029@go.buu.ac.th
 - Piyada Chokchai (Qa1) 65160261@go.buu.ac.th
 - Pasin Yujiseree (Qa2) 65160119@go.buu.ac.th 
-

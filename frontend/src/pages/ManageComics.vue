@@ -73,7 +73,7 @@
                 class="form-input" /></div>
             <div class="form-group">
               <label>ผู้แต่ง (Author):</label>
-              <select v-model="editForm.authorId" class="form-input">
+              <select v-model="editForm.authorId" class="form-input" :disabled="userStore.role !== 'admin'">
                 <option :value="null" disabled>-- เลือกผู้แต่ง --</option>
                 <option v-for="auth in authors" :key="auth.id" :value="auth.id">
                   {{ auth.email }}

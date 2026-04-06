@@ -185,8 +185,22 @@
   .back-link .text { display: none; }
   .title-info h1 { font-size: 1rem; max-width: 200px; }
   
-  .controls { padding: 0 10px; }
-  .nav-btn { padding: 8px 12px; font-size: 0.8rem; }
+  .controls { 
+    padding: 0 10px; 
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .select-group {
+    order: 3;
+    width: 100%;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  .nav-btn { 
+    padding: 8px 12px; 
+    font-size: 0.8rem; 
+    flex: 1; /* Make Prev/Next buttons evenly fill the top row */
+  }
   
   .comic-img {
     max-width: none;
