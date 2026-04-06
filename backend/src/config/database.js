@@ -17,8 +17,8 @@ if (process.env.NODE_ENV === 'test') {
     {
       host: process.env.DB_HOST || 'localhost',
       dialect: 'mysql',
-      port: 3306,
-      logging: false,
+      port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 3306,
+      logging: process.env.DB_LOGGING === 'true' ? console.log : false,
     }
   );
   module.exports = sequelize;

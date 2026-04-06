@@ -12,7 +12,7 @@ OwlBook เป็นแพลตฟอร์มอ่านการ์ตูน
 
 ## Prerequisites
 
-- Node.js 18+
+- Node.js 22+
 - npm (Node Package Manager)
 - MySQL 8.0+
 
@@ -28,18 +28,15 @@ cd owlBook-project
 ### 2. Install Dependencies
 
 ```bash
-# ติดตั้ง Dependencies สำหรับ Backend (Root Folder)
+# ติดตั้ง Dependencies สำหรับ Backend
+cd backend
 npm install
+cd ..
 
 # ติดตั้ง Dependencies สำหรับ Frontend
-cd src/main/frontend
+cd frontend
 npm install
-cd ../../../
-```
-
-# Node.js
-```bash
-npm install
+cd ..
 ```
 ### 3. Configure Database
 
@@ -63,19 +60,15 @@ cp .env.example .env
 ### 5. Run Application
 
 ```bash
-# เริ่มการทำงานของระบบ (Backend รันที่ http://localhost:3000)
+# เริ่มการทำงานของระบบ (Backend รันที่ http://localhost:4000)
+cd src/backend
 npm run dev
+cd ..
 
 # เริ่มการทำงานของส่วนติดต่อผู้ใช้ (Frontend รันที่ http://localhost:5173)
-cd src/main/frontend
+cd src/frontend
 npm run dev
 ```
-# Node.js
-```bash
-npm start
-```
-Application runs at: http://localhost:8080
-
 ## Build & Test
 
 ```bash
