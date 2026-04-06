@@ -40,7 +40,7 @@ exports.login = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ error: 'Email and password are required' });
     }
-    const user = await User.findOne({
+    const user = await User.findOne({ 
       where: { email },
       include: [{ model: Role }]
     });
@@ -112,8 +112,8 @@ exports.getProfile = async (req, res) => {
     const user = await User.findByPk(req.user.id, {
       include: [
         { model: Role },
-        {
-          model: UserCartoonHistory,
+        { 
+          model: UserCartoonHistory, 
           as: 'histories',
           include: [{ model: CartoonEpisode, as: 'episode' }]
         },
@@ -132,10 +132,10 @@ exports.getProfile = async (req, res) => {
       return null;
     }).filter(Boolean);
     const favorites = (user.favorites || []).map(f => String(f.cartoons_id));
-    res.json({
-      userId: user.id,
-      role: roleName,
-      coins: user.coin,
+    res.json({ 
+      userId: user.id, 
+      role: roleName, 
+      coins: user.coin, 
       email: user.email,
       unlockedEpisodes,
       favorites

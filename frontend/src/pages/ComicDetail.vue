@@ -114,12 +114,17 @@ const handleEpisodeAccess = async (ep) => {
     return;
   }
 
-  // 3. ยืนยันการหัก Coins เพื่อปลดล็อก (สำหรับ Member)
-  const price = ep.price || 10;
-  if (confirm(`ปลดล็อกตอนที่ ${ep.number} ใช้ ${price} Coins?`)) {
-    const success = await userStore.unlockEpisode(comic.value.id, ep.id, price);
+  // 3. เช็คว่าเคยซื้อหรือยัง
+  if (userStore.isUnlocked(comic.value.id, ep.id)) {
+    router.push(`/reader/${comic.value.id}/${ep.id}/1`);
+    return;
+  }
+
+  // 4. ยืนยันปลดล็อก (สำหรับ Member)
+  if (confirm(`ปลดล็อกตอนที่ ${ep.number} ใช้ ${ep.price || 10} Coins?`)) {
+    const success = await userStore.unlockEpisode(comic.value.id, ep.id, ep.price || 10);
     if (success) {
-      router.push(`/reader/${comic.value.id}/${ep.id}`);
+      router.push(`/reader/${comic.value.id}/${ep.id}/1`);
     } else {
       if (confirm("เหรียญไม่พอ ต้องการไปหน้าเติมเหรียญหรือไม่?")) {
         router.push('/coin');

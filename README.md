@@ -30,10 +30,14 @@ cd owlBook-project
 ### 2. Install Dependencies
 
 ```bash
-# ติดตั้ง Dependencies ทั้งหมด (Root, Backend, Frontend)
+# ติดตั้ง Dependencies สำหรับ Backend
+cd backend
 npm install
-cd backend && npm install
-cd ../frontend && npm install
+cd ..
+
+# ติดตั้ง Dependencies สำหรับ Frontend
+cd frontend
+npm install
 cd ..
 ```
 ### 3. Configure Database
@@ -60,7 +64,7 @@ cp .env.example .env
 ```bash
 # เริ่มการทำงานของระบบ (Backend รันที่ http://localhost:4000)
 cd src/backend
-npm start
+npm run dev
 cd ..
 
 # เริ่มการทำงานของส่วนติดต่อผู้ใช้ (Frontend รันที่ http://localhost:5173)

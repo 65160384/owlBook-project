@@ -39,6 +39,7 @@ build/
 tmp/
 temp/
 *.log
+coverage/
 
 frontend/public/pdf/*.pdf
 owlBook-project.git/
