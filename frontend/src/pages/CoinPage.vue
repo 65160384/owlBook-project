@@ -3,7 +3,7 @@
     <div class="coin-card">
       <h2>💰 My Wallet</h2>
       <div class="balance-display">
-        <span class="coin-amount">{{ mockUserStore.coins }}</span>
+        <span class="coin-amount">{{ userStore.coins }}</span>
         <span class="coin-label">Coins</span>
       </div>
 
@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { mockUserStore } from '@/store/mockUserStore';
+import { userStore } from '@/store/userStore';
 import "@/assets/styles/coin-page.css"
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -34,12 +34,11 @@ const topUpOptions = [
 ];
 
 // แก้ไขส่วนนี้ใน <script setup> ของ CoinPage.vue
-const topUp = (amount) => {
+const topUp = async (amount) => {
   if (confirm(`ยืนยันการเติมเงิน ฿${amount}?`)) {
-    // 1. เพิ่มเหรียญลงใน Store (ตาม Logic เดิมของคุณ)
-    mockUserStore.coins += amount; 
+    // Add coins and persist to backend DB
+    await userStore.addCoins(amount);
     
-    // 2. แก้ไข: ส่งค่า amount ไปกับ URL เพื่อให้หน้า Success แสดงค่าที่ถูกต้อง
     router.push({ 
       path: '/payment/success', 
       query: { amount: amount } 

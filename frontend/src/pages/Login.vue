@@ -9,7 +9,7 @@
         <div class="form-group">
           <label for="email">Email:</label>
           <input id="email" v-model="email" type="email" class="form-input"
-            placeholder="admin@owlbook.com / provider@test.com" required />
+            placeholder="Enter your email" required />
         </div>
         <div class="form-group">
           <label for="password">Password:</label>
@@ -19,14 +19,14 @@
         <button type="submit" class="login-button">Login</button>
       </form>
 
-      <!-- <div class="dev-test-buttons" style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+      <div class="dev-test-buttons" style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
         <button @click="email = 'admin@owlbook.com'; handleLogin()"
           style="font-size: 11px; padding: 5px; cursor: pointer;">Test Admin</button>
         <button @click="email = 'provider@owlbook.com'; handleLogin()"
           style="font-size: 11px; padding: 5px; cursor: pointer;">Test Provider</button>
         <button @click="email = 'user@test.com'; handleLogin()"
           style="font-size: 11px; padding: 5px; cursor: pointer;">Test Member</button>
-      </div> -->
+      </div>
 
       <div class="register-link-container">
         <p>Don't have an account?</p>
@@ -44,29 +44,42 @@ import {
   useRouter
 } from 'vue-router';
 import {
-  mockUserStore
-} from '@/store/mockUserStore';
+  userStore
+} from '@/store/userStore';
 
 const router = useRouter();
 const email = ref('');
 const password = ref('');
 const errorMessage = ref('');
 
-const handleLogin = () => {
+const BACKEND = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
+
+const handleLogin = async () => {
   if (!email.value || !password.value) return;
 
-  // Logic แยก Role สำหรับทดสอบ
-  let role = 'member';
-  if (email.value.includes('admin')) role = 'admin';
-  else if (email.value.includes('provider')) role = 'provider';
+  try {
+    const res = await fetch(`${BACKEND}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.value, password: password.value })
+    });
 
-  mockUserStore.login(role);
+    const data = await res.json();
 
-  // ถ้าเป็น Admin/Provider ให้ไปหน้าจัดการ
-  if (role === 'admin' || role === 'provider') {
-    router.push('/manage');
-  } else {
-    router.push('/');
+    if (res.ok) {
+      userStore.login(data.token, data.role, data.coins);
+
+      // Navigate based on role
+      if (data.role === 'admin' || data.role === 'provider') {
+        router.push('/manage');
+      } else {
+        router.push('/');
+      }
+    } else {
+      errorMessage.value = data.error || 'Invalid login details';
+    }
+  } catch (error) {
+    errorMessage.value = 'Failed to connect to the server.';
   }
 };
 </script>

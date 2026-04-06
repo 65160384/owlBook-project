@@ -6,7 +6,7 @@
         <div class="filter-group">
           <input v-model="searchQuery" type="text" placeholder="Search title..." class="admin-search form-input" />
         </div>
-        <button v-if="['admin', 'provider'].includes(mockUserStore.role)" class="btn-add-main" @click="openModal(null)">
+        <button v-if="userStore.role === 'admin'" class="btn-add-main" @click="openModal(null)">
           ➕ Add New Series
         </button>
       </div>
@@ -29,7 +29,7 @@
             </td>
             <td data-label="Details" class="col-info-left">
               <div class="manga-title">{{ comic.title }}</div>
-              <div class="manga-meta">โดย: {{ comic.author || 'ไม่ระบุ' }} | ปี: {{ comic.year || '-' }}</div>
+              <div class="manga-meta">โดย: {{ comic.author || 'ไม่ระบุ' }}</div>
               <div class="tag-list-mini">
                 <span v-for="tag in comic.tags" :key="tag" class="tag-mini">{{ tag }}</span>
               </div>
@@ -41,9 +41,9 @@
             </td>
             <td data-label="Actions" class="action-cell">
               <button class="btn-icon blue" @click="manageEpisodes(comic)">📄 <span
-                  class="btn-label">Eps</span></button>
+                  class="btn-label">EPs</span></button>
               <button class="btn-icon orange" @click="openModal(comic)">✏️ <span class="btn-label">Edit</span></button>
-              <button v-if="mockUserStore.role === 'admin'" class="btn-icon red" @click="toggleHide(comic)">
+              <button v-if="userStore.role === 'admin'" class="btn-icon red" @click="toggleHide(comic)">
                 {{ comic.hidden ? '👁️' : '🚫' }}
                 <span class="btn-label">{{ comic.hidden ? 'Show' : 'Hide' }}</span>
               </button>
@@ -71,26 +71,13 @@
           <div class="form-grid-2">
             <div class="form-group"><label>ชื่อเรื่อง (Title):</label><input v-model="editForm.title"
                 class="form-input" /></div>
-            <div class="form-group"><label>ผู้แต่ง (Author):</label><input v-model="editForm.author"
-                class="form-input" /></div>
-          </div>
-          <div class="form-grid-2">
-            <div class="form-group"><label>ปีที่เผยแพร่ (Year):</label><input v-model="editForm.year" type="number"
-                class="form-input" /></div>
             <div class="form-group">
-<<<<<<< Updated upstream
-              <label>สถานะเนื้อเรื่อง:</label>
-              <select v-model="editForm.status" class="form-input">
-                <option value="Ongoing">Ongoing</option>
-                <option value="Completed">Completed</option>
-=======
               <label>ผู้แต่ง (Author):</label>
-             <select v-model="editForm.authorId" class="form-input" :disabled="userStore.role !== 'admin'">
+              <select v-model="editForm.authorId" class="form-input" :disabled="userStore.role !== 'admin'">
                 <option :value="null" disabled>-- เลือกผู้แต่ง --</option>
                 <option v-for="auth in authors" :key="auth.id" :value="auth.id">
                   {{ auth.email }}
                 </option>
->>>>>>> Stashed changes
               </select>
             </div>
           </div>
@@ -109,10 +96,10 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { comics } from "@/data/comics";
-import { mockUserStore } from "@/store/mockUserStore";
+import { comics, managedComics, fetchUserComics } from "@/data/comics";
+import { userStore } from "@/store/userStore";
 import "@/assets/styles/manage-comics.css";
 
 const BACKEND = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000';
@@ -121,20 +108,39 @@ const searchQuery = ref('');
 const showModal = ref(false);
 const isEdit = ref(false);
 const imagePreview = ref(null);
-const editForm = ref({ id: '', title: '', author: '', year: 2026, status: 'Ongoing', description: '', image: '', tagsString: '' });
+const fileToUpload = ref(null);
+const authors = ref([]);
+const editForm = ref({ id: '', title: '', author: '', authorId: null, description: '', image: '', tagsString: '' });
 
 const filteredComics = computed(() => {
-  return comics.filter(c => c.title.toLowerCase().includes(searchQuery.value.toLowerCase()));
+  return managedComics.filter(c => c.title.toLowerCase().includes(searchQuery.value.toLowerCase()));
+});
+
+const fetchAuthors = async () => {
+  try {
+    const res = await fetch(`${BACKEND}/api/auth/authors`, {
+      headers: { 'Authorization': `Bearer ${userStore.token}` }
+    });
+    if (res.ok) authors.value = await res.json();
+  } catch (e) {
+    console.warn('Failed to fetch authors', e);
+  }
+};
+
+onMounted(() => {
+  fetchUserComics(true);
+  fetchAuthors();
 });
 
 const openModal = (comic) => {
   imagePreview.value = null;
+  fileToUpload.value = null;
   if (comic) {
     isEdit.value = true;
     editForm.value = { ...comic, tagsString: (comic.tags || []).join(', ') };
   } else {
     isEdit.value = false;
-    editForm.value = { id: 'user-' + Date.now(), title: '', author: '', year: 2026, status: 'Ongoing', description: '', image: '', tagsString: '' };
+    editForm.value = { id: null, title: '', author: '', authorId: null, description: '', image: '', tagsString: '' };
   }
   showModal.value = true;
 };
@@ -142,8 +148,9 @@ const openModal = (comic) => {
 const handleImageUpload = (event) => {
   const file = event.target.files[0];
   if (file) {
+    fileToUpload.value = file;
     const reader = new FileReader();
-    reader.onload = (e) => { imagePreview.value = e.target.result; editForm.value.image = e.target.result; };
+    reader.onload = (e) => { imagePreview.value = e.target.result; };
     reader.readAsDataURL(file);
   }
 };
@@ -160,25 +167,51 @@ const updateLocalUI = (payload) => {
 
 const saveComic = async () => {
   const finalTags = editForm.value.tagsString.split(',').map(t => t.trim()).filter(Boolean);
-  const payload = { ...editForm.value, tags: finalTags };
-  delete payload.tagsString;
+  
+  const fd = new FormData();
+  fd.append('name', editForm.value.title);
+  fd.append('description', editForm.value.description);
+  fd.append('authorId', editForm.value.authorId || '');
+  fd.append('tags', JSON.stringify(finalTags));
+  
+  if (fileToUpload.value) {
+    fd.append('image', fileToUpload.value);
+  }
 
   try {
     const method = isEdit.value ? 'PATCH' : 'POST';
-    const res = await fetch(`${BACKEND}/api/comics/${editForm.value.id}`, {
+    const url = isEdit.value 
+      ? `${BACKEND}/api/comics/${editForm.value.id}` 
+      : `${BACKEND}/api/comics`;
+
+    const res = await fetch(url, {
       method: method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      headers: { 
+        'Authorization': `Bearer ${userStore.token}` 
+      },
+      body: fd
     });
 
-    if (!res.ok) throw new Error("Server error");
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || "Server error");
+    }
 
-    updateLocalUI(payload);
-    alert("บันทึกเรียบร้อย!");
+    const savedComic = await res.json();
+    
+    // Transform backend fields back to frontend fields for local UI sync
+    const uiPayload = {
+      ...savedComic,
+      title: savedComic.name,
+      tags: (savedComic.categories || []).map(c => c.name),
+      author: (savedComic.authors || []).map(a => a.email).join(', ')
+    };
+
+    updateLocalUI(uiPayload);
+    alert("บันทึกสำเร็จ!");
   } catch (e) {
-    // Simulation Mode: ถ้า Server ปิด ให้แก้ในหน้าเว็บไปก่อน
-    updateLocalUI(payload);
-    alert("บันทึกเรียบร้อย (Simulation Mode: เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ ข้อมูลจะอัปเดตเฉพาะหน้าเว็บนี้)");
+    console.error(e);
+    alert("เกิดข้อผิดพลาด: " + e.message);
   } finally {
     showModal.value = false;
   }
@@ -189,7 +222,10 @@ const toggleHide = async (comic) => {
   try {
     const res = await fetch(`${BACKEND}/api/comics/${comic.id}`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${userStore.token}`
+      },
       body: JSON.stringify({ hidden: newStatus })
     });
 
@@ -207,7 +243,7 @@ const toggleHide = async (comic) => {
 const manageEpisodes = (comic) => { router.push({ name: 'EpisodeManager', params: { comicId: comic.id } }); };
 const absPath = (p) => {
   if (!p) return '';
-  if (p.startsWith('data:') || p.startsWith('http') || p.startsWith('/src')) return p;
+  if (p.startsWith('data:') || p.startsWith('http')) return p;
   return BACKEND + p;
 };
 </script>

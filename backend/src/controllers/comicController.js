@@ -137,7 +137,7 @@ exports.updateComic = async (req, res) => {
         }
       }
     }
-     if (authorId && req.user.role === 'admin') {
+    if (authorId && req.user.role === 'admin') {
       await comic.setAuthors([authorId]);
     }
     await comic.reload({

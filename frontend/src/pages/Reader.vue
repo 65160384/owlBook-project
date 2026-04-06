@@ -1,38 +1,18 @@
 <template>
   <div class="reader" v-if="currentComic && currentEpisode">
+    <!-- Sticky Header -->
     <div class="reader-header-container">
       <div class="reader-header">
-        <router-link :to="'/comic/' + currentComic.id" class="back-link">⬅ Back to Detail</router-link>
+        <router-link :to="'/comic/' + currentComic.id" class="back-link">
+          <span class="icon">❮</span> <span class="text">Back</span>
+        </router-link>
         <div class="title-info">
-          <router-link :to="'/comic/' + currentComic.id">
-            <h1>{{ currentComic.title }}</h1>
-          </router-link>
-          <p>ตอนที่ {{ currentEpisode.number }}</p>
+          <h1>{{ currentComic.title }}</h1>
+          <p>Episode {{ currentEpisode.number }}</p>
         </div>
       </div>
     </div>
 
-<<<<<<< Updated upstream
-    <div class="controls">
-      <button class="btn nav-btn" @click="handlePrev">◀ Previous</button>
-
-  <select class="custom-select form-input" :value="currentEpisode.id" @change="changeEpisode($event.target.value)">
-        <option v-for="ep in episodes" :key="ep.id" :value="ep.id">
-          ตอนที่ {{ ep.number }}
-        </option>
-      </select>
-
-  <select class="custom-select form-input" v-model="mode">
-        <option value="scroll">อ่านเต็มหน้า (Scroll)</option>
-        <option value="page">อ่านทีละหน้า (Page)</option>
-      </select>
-
-  <select v-if="mode === 'page' && totalPages > 0" class="custom-select form-input" v-model="currentPage" @change="updateUrl">
-        <option v-for="p in totalPages" :key="p" :value="p">Page {{ p }} / {{ totalPages }}</option>
-      </select>
-
-      <button class="btn nav-btn" @click="handleNext">Next ▶</button>
-=======
     <!-- Top Controls -->
     <div class="controls-wrapper top">
       <div class="controls">
@@ -58,85 +38,33 @@
 
         <button class="nav-btn" @click="handleNext" :disabled="currentIndex >= episodes.length - 1 && (mode === 'scroll' || currentPage >= totalPages)">Next ▶</button>
       </div>
->>>>>>> Stashed changes
     </div>
 
-  <div class="content">
-  <div v-if="mode === 'page' && currentEpisode.images" class="page-container">
-    <img 
-      :src="currentEpisode.images[currentPage - 1]" 
-      @click="handleNext" 
-      class="comic-img" 
-      style="width: 100%; max-width: 1000px; height: auto; display: block; margin: 0 auto;"
-      loading="lazy"
-    />
-  </div>
+    <!-- Main Content -->
+    <div class="content" :class="mode">
+      <template v-if="mode === 'page' && totalPages > 0">
+        <div class="page-container">
+          <img :src="currentEpisode.images[currentPage - 1]" @click="handleNext" class="comic-img" loading="lazy" />
+          <div class="page-indicator">{{ currentPage }} / {{ totalPages }}</div>
+        </div>
+      </template>
 
-  <div v-else-if="mode === 'scroll' && currentEpisode.images" class="scroll-container">
-    <img 
-      v-for="(img, index) in currentEpisode.images" 
-      :key="index" 
-      :src="img" 
-      class="comic-img" 
-      style="width: 100%; max-width: 1000px; height: auto; display: block; margin: 0 auto; margin-bottom: 10px;"
-      loading="lazy"
-    />
-  </div>
-</div>
-
-    <div class="controls bottom">
-      <button class="btn nav-btn" @click="handlePrev">◀ Previous</button>
-
-  <select class="custom-select form-input" :value="currentEpisode.id" @change="changeEpisode($event.target.value)">
-        <option v-for="ep in episodes" :key="ep.id" :value="ep.id">
-          ตอนที่ {{ ep.number }}
-        </option>
-      </select>
-
-  <select class="custom-select form-input" v-model="mode">
-        <option value="scroll">อ่านเต็มหน้า (Scroll)</option>
-        <option value="page">อ่านทีละหน้า (Page)</option>
-      </select>
-
-  <select v-if="mode === 'page' && totalPages > 0" class="custom-select form-input" v-model="currentPage" @change="updateUrl">
-        <option v-for="p in totalPages" :key="p" :value="p">Page {{ p }} / {{ totalPages }}</option>
-      </select>
-
-      <button class="btn nav-btn" @click="handleNext">Next ▶</button>
+      <template v-else-if="mode === 'scroll' && currentEpisode.images">
+        <div class="scroll-container">
+          <img v-for="(img, index) in currentEpisode.images" :key="index" :src="img" class="comic-img" loading="lazy" />
+        </div>
+      </template>
     </div>
 
-<<<<<<< Updated upstream
-    <button class="scroll-top" @click="scrollToTop">Top ⬆</button>
-=======
     <!-- Bottom Controls -->
     <div class="controls-wrapper bottom">
       <div class="controls">
-        <button class="nav-btn" @click="handlePrev" :disabled="currentIndex <= 0 && (mode === 'scroll' || currentPage <= 1)">◀ Prev</button>
-        
-        <div class="select-group">
-          <!-- Page Selector -->
-          <select v-if="mode === 'page' && totalPages > 0" class="custom-select" :value="currentPage" @change="handlePageSelect">
-            <option v-for="page in totalPages" :key="page" :value="page">Page {{ page }}</option>
-          </select>
-
-          <!-- Episode Selector -->
-          <select class="custom-select" :value="currentEpisode.id" @change="changeEpisode($event.target.value)">
-            <option v-for="ep in episodes" :key="ep.id" :value="ep.id">Ep {{ ep.number }}</option>
-          </select>
-          
-          <!-- Mode Selector -->
-          <select class="custom-select" :value="mode" @change="handleModeSelect">
-            <option value="scroll">Scroll</option>
-            <option value="page">Page</option>
-          </select>
-        </div>
-
-        <button class="nav-btn" @click="handleNext" :disabled="currentIndex >= episodes.length - 1 && (mode === 'scroll' || currentPage >= totalPages)">Next ▶</button>
+        <button class="nav-btn" @click="handlePrev">◀ Previous</button>
+        <button class="nav-btn primary" @click="handleNext">Next Episode ▶</button>
       </div>
     </div>
 
     <button class="scroll-top" @click="scrollToTop">↑</button>
->>>>>>> Stashed changes
   </div>
 </template>
 
@@ -144,7 +72,7 @@
 import { ref, computed, watch, onMounted } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { comics } from "@/data/comics"
-import { mockUserStore } from "@/store/mockUserStore"
+import { userStore } from "@/store/userStore"
 import "@/assets/styles/reader.css"
 
 const route = useRoute()
@@ -153,9 +81,9 @@ const router = useRouter()
 const mode = ref("scroll")
 const currentPage = ref(1)
 
-const currentComic = computed(() => comics.find(c => c.id === route.params.comic))
+const currentComic = computed(() => comics.find(c => String(c.id) === String(route.params.comic)))
 const episodes = computed(() => currentComic.value?.episodes || [])
-const currentEpisode = computed(() => episodes.value.find(e => e.id === route.params.episode) || episodes.value[0])
+const currentEpisode = computed(() => episodes.value.find(e => String(e.id) === String(route.params.episode)) || episodes.value[0])
 const totalPages = computed(() => currentEpisode.value?.images?.length || 0)
 const currentIndex = computed(() => episodes.value.findIndex(e => e.id === currentEpisode.value?.id))
 
@@ -214,24 +142,8 @@ const executeNavigation = (targetEp, goLastPage) => {
 }
 
 // Logic การเปลี่ยนตอน (Smart Navigation)
-const navigateToEpisode = (targetEp, goLastPage = false) => {
+const navigateToEpisode = async (targetEp, goLastPage = false) => {
   if (!targetEp) return
-<<<<<<< Updated upstream
-  const freeLimit = currentComic.value?.freeEpisodes || 0
-  const isLocked = targetEp.number > freeLimit && !mockUserStore.isUnlocked(currentComic.value.id, targetEp.id)
-  
-  if (!isLocked) {
-    const targetPage = goLastPage ? targetEp.pages : 1
-    router.push(`/reader/${currentComic.value.id}/${targetEp.id}/${targetPage}`)
-  } else {
-    if (confirm(`ตอนที่ ${targetEp.number} ติดเหรียญ ยืนยันปลดล็อกเพื่ออ่านต่อ?`)) {
-      if (mockUserStore.unlockEpisode(currentComic.value.id, targetEp.id, targetEp.price || 10)) {
-        const targetPage = goLastPage ? targetEp.pages : 1
-        router.push(`/reader/${currentComic.value.id}/${targetEp.id}/${targetPage}`)
-      } else if (confirm("เหรียญไม่พอ ไปเติมเหรียญไหม?")) {
-        router.push("/coin")
-      }
-=======
   
   const isLocked = checkIsLocked(targetEp);
   
@@ -255,7 +167,6 @@ const navigateToEpisode = (targetEp, goLastPage = false) => {
       executeNavigation(targetEp, goLastPage);
     } else if (confirm("เหรียญไม่พอ ไปหน้าเติมเหรียญหรือไม่?")) {
       router.push("/coin")
->>>>>>> Stashed changes
     }
   }
 }
@@ -285,7 +196,7 @@ const handlePrev = () => {
 }
 
 const changeEpisode = (epId) => {
-  const ep = episodes.value.find(e => e.id === epId)
+  const ep = episodes.value.find(e => String(e.id) === String(epId))
   navigateToEpisode(ep, false)
 }
 
